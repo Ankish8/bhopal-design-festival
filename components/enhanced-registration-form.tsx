@@ -647,7 +647,7 @@ export function EnhancedRegistrationFormComponent() {
           transition={{ duration: 0.5 }}
           className="text-center"
         >
-          <h1 className="text-4xl font-bold text-[#460E2F]">Bhopal Design Festival 2024</h1>
+          <h1 className="text-4xl font-bold text-[#460E2F]">Bhopal Design Festival</h1>
           <p className="text-xl text-[#212120] mt-2">2nd Edition</p>
           <p className="text-lg text-[#212120] mt-1">21st - 23rd November 2024</p>
         </motion.div>
