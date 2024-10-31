@@ -430,9 +430,9 @@ export function EnhancedRegistrationFormComponent() {
                                           {line.startsWith('-') ? (
                                             <span className="flex">
                                               <span className="mr-2">•</span>
-                                              {line.substring(2)}
+                                              {line.substring(2).replace(/'/g, "&apos;")}
                                             </span>
-                                          ) : line}
+                                          ) : line.replace(/'/g, "&apos;")}
                                         </div>
                                       ))}
                                     </div>
@@ -506,9 +506,9 @@ export function EnhancedRegistrationFormComponent() {
                                             {line.startsWith('-') ? (
                                               <span className="flex">
                                                 <span className="mr-2">•</span>
-                                                {line.substring(2)}
+                                                {line.substring(2).replace(/'/g, "&apos;")}
                                               </span>
-                                            ) : line}
+                                            ) : line.replace(/'/g, "&apos;")}
                                           </div>
                                         ))}
                                       </div>
