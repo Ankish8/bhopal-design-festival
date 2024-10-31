@@ -30,6 +30,7 @@ import {
   Mail 
 } from "lucide-react"
 
+// Types and Interfaces
 type WorkshopDate = "November 21st, 2024" | "November 22nd, 2024";
 
 type Workshop = {
@@ -56,23 +57,35 @@ interface FormData {
   };
 }
 
-interface FormData {
-  name: string;
-  email: string;
-  phone: string;
-  organizationType: string;
-  organizationName: string;
-  competition: string;
-  workshops: {
-    "November 21st, 2024": string;
-    "November 22nd, 2024": string;
-  };
-}
-
 interface FormErrors {
   [key: string]: string;
 }
 
+// Animated Background Component
+function AnimatedBackground({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="min-h-screen relative overflow-hidden">
+      <div className="absolute inset-0 bg-gradient-to-br from-purple-700 via-pink-600 to-amber-500 animate-gradient"></div>
+      <div className="absolute inset-0">
+        {Array.from({ length: 8 }).map((_, i) => (
+          <div
+            key={i}
+            className={`bubble-${i + 1} absolute bg-white/10 rounded-full animate-rise`}
+            style={{
+              width: `${Math.random() * 60 + 20}px`,
+              height: `${Math.random() * 60 + 20}px`,
+              left: `${(i + 1) * 10}%`,
+              animationDelay: `${Math.random() * 10}s`,
+            }}
+          />
+        ))}
+      </div>
+      <div className="relative z-10">{children}</div>
+    </div>
+  );
+}
+
+// Form Steps and Data
 const formSteps = [
   { title: "Personal Information", description: "Tell us about yourself" },
   { title: "Organization Details", description: "Information about your organization" },
@@ -86,7 +99,6 @@ const organizationTypes = [
   { value: "college", label: "College", icon: Building },
   { value: "professional", label: "Professional", icon: Briefcase },
 ]
-
 const competitions = [
   { 
     value: "visionary-ventures", 
@@ -236,7 +248,6 @@ export function EnhancedRegistrationFormComponent() {
     return Object.keys(newErrors).length === 0
   }
 
-
   const nextStep = () => {
     if (validateStep()) {
       setStep((prev) => Math.min(prev + 1, formSteps.length - 1))
@@ -245,50 +256,6 @@ export function EnhancedRegistrationFormComponent() {
 
   const prevStep = () => {
     setStep((prev) => Math.max(prev - 1, 0))
-  }
-
-  const handleSubmit = async () => {
-    if (validateStep()) {
-      setIsSubmitting(true)
-      try {
-        // Prepare the data for Make.com
-        const makeData = {
-          ...formData,
-          competitionName: competitions.find(c => c.value === formData.competition)?.label || "",
-          workshopsSelected: workshopDates.map((date) => ({
-            date,
-            workshop: workshops[date].find(w => w.value === formData.workshops[date])?.label || "None selected"
-          })),
-          submissionDate: new Date().toISOString(),
-        }
-
-        // Send data to Make.com webhook
-        const response = await fetch('https://hook.eu2.make.com/bone3wxkg21torr3n096m4x6gw36lys1', {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify(makeData)
-        });
-
-        if (!response.ok) {
-          throw new Error('Failed to submit form');
-        }
-
-        console.log('Form submitted successfully');
-        setIsSubmitted(true)
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 }
-        })
-      } catch (error) {
-        console.error('Error submitting form:', error);
-        alert('Failed to submit form. Please try again.');
-      } finally {
-        setIsSubmitting(false)
-      }
-    }
   }
 
   const renderStep = () => {
@@ -408,7 +375,7 @@ export function EnhancedRegistrationFormComponent() {
             )}
           </motion.div>
         )
-      case 2:
+        case 2:
         return (
           <motion.div
             initial={{ opacity: 0, x: 20 }}
@@ -437,7 +404,7 @@ export function EnhancedRegistrationFormComponent() {
                           <competition.icon className="w-5 h-5 mr-2 text-[#460E2F] flex-shrink-0" />
                           <div>
                             <div className="text-[#212120]">{competition.label}</div>
-                            <p  className="text-sm text-[#212120]/70">{competition.description}</p>
+                            <p className="text-sm text-[#212120]/70">{competition.description}</p>
                           </div>
                         </div>
                         <Dialog>
@@ -447,33 +414,33 @@ export function EnhancedRegistrationFormComponent() {
                               Details
                             </Button>
                           </DialogTrigger>
-                          <DialogContent className="sm:max-w-[425px] bg-white">
-  <DialogHeader className="pb-4">
-    <DialogTitle className="text-[#460E2F] text-xl font-semibold">{competition.label}</DialogTitle>
-  </DialogHeader>
-  <ScrollArea className="mt-2 max-h-[60vh] overflow-auto pr-4">
-    <div className="space-y-4">
-      {competition.details.split('\n\n').map((section, index) => {
-        const [title, ...content] = section.split('\n');
-        return (
-          <div key={index} className="text-[#212120]">
-            <div className="font-medium mb-1">{title}</div>
-            {content.map((line, i) => (
-              <div key={i} className="text-sm leading-relaxed ml-4">
-                {line.startsWith('-') ? (
-                  <span className="flex">
-                    <span className="mr-2">•</span>
-                    {line.substring(2)}
-                  </span>
-                ) : line}
-              </div>
-            ))}
-          </div>
-        );
-      })}
-    </div>
-  </ScrollArea>
-</DialogContent>
+                          <DialogContent className="sm:max-w-[425px] bg-white/95 backdrop-blur-sm">
+                            <DialogHeader className="pb-4">
+                              <DialogTitle className="text-[#460E2F] text-xl font-semibold">{competition.label}</DialogTitle>
+                            </DialogHeader>
+                            <ScrollArea className="mt-2 max-h-[60vh] overflow-auto pr-4">
+                              <div className="space-y-4">
+                                {competition.details.split('\n\n').map((section, index) => {
+                                  const [title, ...content] = section.split('\n');
+                                  return (
+                                    <div key={index} className="text-[#212120]">
+                                      <div className="font-medium mb-1">{title}</div>
+                                      {content.map((line, i) => (
+                                        <div key={i} className="text-sm leading-relaxed ml-4">
+                                          {line.startsWith('-') ? (
+                                            <span className="flex">
+                                              <span className="mr-2">•</span>
+                                              {line.substring(2)}
+                                            </span>
+                                          ) : line}
+                                        </div>
+                                      ))}
+                                    </div>
+                                  );
+                                })}
+                              </div>
+                            </ScrollArea>
+                          </DialogContent>
                         </Dialog>
                       </div>
                     </div>
@@ -523,33 +490,33 @@ export function EnhancedRegistrationFormComponent() {
                                 Details
                               </Button>
                             </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px] bg-white">
-  <DialogHeader className="pb-4">
-    <DialogTitle className="text-[#460E2F] text-xl font-semibold">{workshop.label}</DialogTitle>
-  </DialogHeader>
-  <ScrollArea className="mt-2 max-h-[60vh] overflow-auto pr-4">
-    <div className="space-y-4">
-      {workshop.details.split('\n\n').map((section, index) => {
-        const [title, ...content] = section.split('\n');
-        return (
-          <div key={index} className="text-[#212120]">
-            <div className="font-medium mb-1">{title}</div>
-            {content.map((line, i) => (
-              <div key={i} className="text-sm leading-relaxed ml-4">
-                {line.startsWith('-') ? (
-                  <span className="flex">
-                    <span className="mr-2">•</span>
-                    {line.substring(2)}
-                  </span>
-                ) : line}
-              </div>
-            ))}
-          </div>
-        );
-      })}
-    </div>
-  </ScrollArea>
-</DialogContent>
+                            <DialogContent className="sm:max-w-[425px] bg-white/95 backdrop-blur-sm">
+                              <DialogHeader className="pb-4">
+                                <DialogTitle className="text-[#460E2F] text-xl font-semibold">{workshop.label}</DialogTitle>
+                              </DialogHeader>
+                              <ScrollArea className="mt-2 max-h-[60vh] overflow-auto pr-4">
+                                <div className="space-y-4">
+                                  {workshop.details.split('\n\n').map((section, index) => {
+                                    const [title, ...content] = section.split('\n');
+                                    return (
+                                      <div key={index} className="text-[#212120]">
+                                        <div className="font-medium mb-1">{title}</div>
+                                        {content.map((line, i) => (
+                                          <div key={i} className="text-sm leading-relaxed ml-4">
+                                            {line.startsWith('-') ? (
+                                              <span className="flex">
+                                                <span className="mr-2">•</span>
+                                                {line.substring(2)}
+                                              </span>
+                                            ) : line}
+                                          </div>
+                                        ))}
+                                      </div>
+                                    );
+                                  })}
+                                </div>
+                              </ScrollArea>
+                            </DialogContent>
                           </Dialog>
                         </div>
                       </div>
@@ -560,7 +527,7 @@ export function EnhancedRegistrationFormComponent() {
             ))}
           </motion.div>
         )
-      case 4:
+        case 4:
         return (
           <motion.div
             initial={{ opacity: 0, x: 20 }}
@@ -599,8 +566,8 @@ export function EnhancedRegistrationFormComponent() {
                   <p className="font-medium text-[#212120]">Workshops</p>
                   {Object.entries(formData.workshops).map(([date, workshopValue]) => (
                     <p key={date} className="text-sm text-[#212120]/70">
-                {date}: {workshops[date as WorkshopDate].find(w => w.value === workshopValue)?.label || "None selected"}
-                </p>
+                      {date}: {workshops[date as WorkshopDate].find(w => w.value === workshopValue)?.label || "None selected"}
+                    </p>
                   ))}
                 </div>
               </div>
@@ -613,110 +580,151 @@ export function EnhancedRegistrationFormComponent() {
     }
   }
 
+  const handleSubmit = async () => {
+    if (validateStep()) {
+      setIsSubmitting(true)
+      try {
+        const makeData = {
+          ...formData,
+          competitionName: competitions.find(c => c.value === formData.competition)?.label || "",
+          workshopsSelected: workshopDates.map((date) => ({
+            date,
+            workshop: workshops[date].find(w => w.value === formData.workshops[date])?.label || "None selected"
+          })),
+          submissionDate: new Date().toISOString(),
+        }
+
+        const response = await fetch('https://hook.eu2.make.com/bone3wxkg21torr3n096m4x6gw36lys1', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(makeData)
+        });
+
+        if (!response.ok) throw new Error('Failed to submit form');
+        
+        setIsSubmitted(true)
+        confetti({
+          particleCount: 100,
+          spread: 70,
+          origin: { y: 0.6 }
+        })
+      } catch (error) {
+        console.error('Error submitting form:', error);
+        alert('Failed to submit form. Please try again.');
+      } finally {
+        setIsSubmitting(false)
+      }
+    }
+  }
+
   if (isSubmitted) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#D2DDDE] via-white to-[#D2DDDE] p-4">
-        <motion.div
-          initial={{ scale: 0.8, opacity: 0 }}
-          animate={{ scale: 1, opacity: 1 }}
-          transition={{ duration: 0.5 }}
-        >
-          <Card className="w-full max-w-2xl bg-white">
-            <CardHeader>
-              <CardTitle className="text-3xl font-bold text-center text-[#460E2F]">Thank You!</CardTitle>
-              <CardDescription className="text-center text-[#212120]">Your registration for the Bhopal Design Festival is complete.</CardDescription>
-            </CardHeader>
-            <CardContent>
-              <div className="text-center space-y-4">
-                <p className="text-lg text-[#460E2F]">We&apos;re excited to have you join us, {formData.name}!</p>
-                <p className="text-[#212120]">Keep an eye on your email for further details and updates about the festival.</p>
-              </div>
-            </CardContent>
-          </Card>
-        </motion.div>
-      </div>
+      <AnimatedBackground>
+        <div className="min-h-screen flex items-center justify-center p-4">
+          <motion.div
+            initial={{ scale: 0.8, opacity: 0 }}
+            animate={{ scale: 1, opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="w-full max-w-2xl"
+          >
+            <Card className="bg-white/95 backdrop-blur-sm shadow-xl border-0">
+              <CardHeader>
+                <CardTitle className="text-3xl font-bold text-center text-[#460E2F]">Thank You!</CardTitle>
+                <CardDescription className="text-center text-[#212120]">
+                  Your registration for the Bhopal Design Festival is complete.
+                </CardDescription>
+              </CardHeader>
+              <CardContent>
+                <div className="text-center space-y-4">
+                  <p className="text-lg text-[#460E2F]">We're excited to have you join us, {formData.name}!</p>
+                  <p className="text-[#212120]">Keep an eye on your email for further details and updates about the festival.</p>
+                </div>
+              </CardContent>
+            </Card>
+          </motion.div>
+        </div>
+      </AnimatedBackground>
     )
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-[#D2DDDE] p-4">
-      <div className="w-full max-w-2xl space-y-6">
-        <motion.div
-          initial={{ opacity: 0, y: -20 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          className="text-center"
-        >
-          <h1 className="text-4xl font-bold text-[#460E2F]">Bhopal Design Festival</h1>
-          <p className="text-xl text-[#212120] mt-2">2nd Edition</p>
-          <p className="text-lg text-[#212120] mt-1">21st - 23rd November 2024</p>
-        </motion.div>
-        <Card className="w-full bg-white border-[#460E2F]/10 shadow-lg">
-          <CardHeader>
-            <div className="flex items-center justify-between mb-2">
-              <CardTitle className="text-2xl font-bold text-[#460E2F]">{formSteps[step].title}</CardTitle>
-              <p className="text-sm text-[#212120]/70">Step {step + 1} of {formSteps.length}</p>
-            </div>
-            <CardDescription className="text-[#212120]">{formSteps[step].description}</CardDescription>
-          </CardHeader>
-          <CardContent>
-            <div className="mb-8">
-              <div className="relative h-1 bg-[#D2DDDE] rounded-full">
-                <motion.div
-                  className="absolute top-0 left-0 h-1 bg-[#460E2F] rounded-full"
-                  initial={{ width: "0%" }}
-                  animate={{ width: `${((step + 1) / formSteps.length) * 100}%` }}
-                  transition={{ duration: 0.5 }}
-                />
+    <AnimatedBackground>
+      <div className="min-h-screen flex flex-col items-center pt-12 px-4">
+        <div className="w-full max-w-2xl">
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+            className="text-center mb-8"
+          >
+            <h1 className="text-4xl font-bold text-white">Bhopal Design Festival</h1>
+            <p className="text-xl text-white/90 mt-2">2nd Edition</p>
+            <p className="text-lg text-white/80 mt-1">21st - 23rd November 2024</p>
+          </motion.div>
+
+          <Card className="bg-white/95 backdrop-blur-sm shadow-xl border-0">
+            <CardHeader>
+              <div className="flex items-center justify-between mb-2">
+                <CardTitle className="text-2xl font-bold text-[#460E2F]">{formSteps[step].title}</CardTitle>
+                <p className="text-sm text-[#212120]/70">Step {step + 1} of {formSteps.length}</p>
               </div>
-            </div>
-            <AnimatePresence mode="wait" initial={false}>
-              {renderStep()}
-            </AnimatePresence>
-          </CardContent>
-          <CardFooter className="flex justify-between">
-            {step > 0 && (
-              <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
-                <Button 
-                  onClick={prevStep} 
-                  variant="outline" 
-                  className="border-[#460E2F] text-[#460E2F] hover:bg-[#D2DDDE]/20"
-                >
-                  <ChevronLeft className="mr-2 h-4 w-4" /> Back
-                </Button>
-              </motion.div>
-            )}
-            {step < formSteps.length - 1 ? (
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="ml-auto"
-              >
-                <Button 
-                  onClick={nextStep} 
-                  className="bg-[#460E2F] hover:bg-[#460E2F]/90 text-white"
-                >
-                  Next <ChevronRight className="ml-2 h-4 w-4" />
-                </Button>
-              </motion.div>
-            ) : (
-              <motion.div
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                className="ml-auto"
-              >
-<Button 
-  onClick={handleSubmit} 
-  className="bg-[#F68B29] hover:bg-[#F68B29]/90 text-white"
-  disabled={isSubmitting}
->
-  {isSubmitting ? "Submitting..." : "Submit Registration"} <Check className="ml-2 h-4 w-4" />
-</Button>
-              </motion.div>
-            )}
-          </CardFooter>
-        </Card>
+              <CardDescription className="text-[#212120]">{formSteps[step].description}</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <div className="mb-8">
+                <div className="relative h-1 bg-[#D2DDDE] rounded-full">
+                  <motion.div
+                    className="absolute top-0 left-0 h-1 bg-[#460E2F] rounded-full"
+                    initial={{ width: "0%" }}
+                    animate={{ width: `${((step + 1) / formSteps.length) * 100}%` }}
+                    transition={{ duration: 0.5 }}
+                  />
+                </div>
+              </div>
+              
+              <AnimatePresence mode="wait" initial={false}>
+                {renderStep()}
+              </AnimatePresence>
+            </CardContent>
+
+            <CardFooter className="flex justify-between">
+              {step > 0 && (
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }}>
+                  <Button 
+                    onClick={prevStep} 
+                    variant="outline" 
+                    className="border-[#460E2F] text-[#460E2F] hover:bg-[#D2DDDE]/20"
+                  >
+                    <ChevronLeft className="mr-2 h-4 w-4" /> Back
+                  </Button>
+                </motion.div>
+              )}
+              
+              {step < formSteps.length - 1 ? (
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="ml-auto">
+                  <Button 
+                    onClick={nextStep} 
+                    className="bg-[#460E2F] hover:bg-[#460E2F]/90 text-white"
+                  >
+                    Next <ChevronRight className="ml-2 h-4 w-4" />
+                  </Button>
+                </motion.div>
+              ) : (
+                <motion.div whileHover={{ scale: 1.05 }} whileTap={{ scale: 0.95 }} className="ml-auto">
+                  <Button 
+                    onClick={handleSubmit} 
+                    className="bg-[#F68B29] hover:bg-[#F68B29]/90 text-white"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? "Submitting..." : "Submit Registration"} 
+                    <Check className="ml-2 h-4 w-4" />
+                  </Button>
+                </motion.div>
+              )}
+            </CardFooter>
+          </Card>
+        </div>
       </div>
-    </div>
+    </AnimatedBackground>
   )
 }
