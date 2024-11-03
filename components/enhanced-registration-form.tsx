@@ -10,12 +10,24 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group"
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog"
 import { ScrollArea } from "@/components/ui/scroll-area"
 import confetti from 'canvas-confetti'
+import Image from 'next/image'
 import type { LucideIcon } from 'lucide-react';
 import { 
   Building, 
   Trophy, 
   BookOpen, 
+  Users2Icon,
+  WrenchIcon,
+  UserCheckIcon,
+  Clock,
+  MapPin,
+  PackageIcon,
+  ScrollTextIcon,
+  CheckCircleIcon,
   Check, 
+  BoxIcon,
+  Paintbrush,
+  Box,
   ChevronRight, 
   ChevronLeft, 
   Palette, 
@@ -530,33 +542,56 @@ export function EnhancedRegistrationFormComponent() {
       Details
     </Button>
   </DialogTrigger>
-  <DialogContent className="sm:max-w-[425px] bg-white shadow-lg border-0">
-    <DialogHeader className="pb-4">
-      <DialogTitle className="text-[#460E2F] text-xl font-bold tracking-normal">
-        {competition.label}
-      </DialogTitle>
+  <DialogContent className="sm:max-w-[550px] bg-white shadow-xl border-0">
+    <DialogHeader className="border-b border-[#D2DDDE] pb-4">
+      <div className="flex items-center space-x-3">
+        <competition.icon className="w-8 h-8 text-[#460E2F]" />
+        <div>
+          <DialogTitle className="text-[#460E2F] text-2xl font-bold tracking-normal">
+            {competition.label}
+          </DialogTitle>
+          <p className="text-[#212120]/70 mt-1">{competition.description}</p>
+        </div>
+      </div>
     </DialogHeader>
-    <ScrollArea className="mt-2 max-h-[60vh]">
-      <div className="space-y-4 pr-4">
+    <ScrollArea className="mt-4 max-h-[65vh] pr-6">
+      <div className="space-y-6">
         {competition.details.split('\n\n').map((section, index) => {
           const [title, ...content] = section.split('\n');
           return (
-            <div key={index} className="text-[#212120] antialiased">
-              <div className="font-bold mb-2 tracking-normal text-base">
-                {title}
+            <div key={index} className="text-[#212120]">
+              <div className="flex items-center space-x-2 mb-3">
+                {title.toLowerCase().includes('mode') && <Building className="w-5 h-5 text-[#460E2F]" />}
+                {title.toLowerCase().includes('team') && <Users2Icon className="w-5 h-5 text-[#460E2F]" />}
+                {title.toLowerCase().includes('categories') && <GraduationCap className="w-5 h-5 text-[#460E2F]" />}
+                {title.toLowerCase().includes('deliverables') && <PackageIcon className="w-5 h-5 text-[#460E2F]" />}
+                {title.toLowerCase().includes('problem') && <Lightbulb className="w-5 h-5 text-[#460E2F]" />}
+                {title.toLowerCase().includes('rules') && <ScrollTextIcon className="w-5 h-5 text-[#460E2F]" />}
+                {title.toLowerCase().includes('evaluation') && <CheckCircleIcon className="w-5 h-5 text-[#460E2F]" />}
+                {title.toLowerCase().includes('duration') && <Clock className="w-5 h-5 text-[#460E2F]" />}
+                {title.toLowerCase().includes('overview') && <BookOpen className="w-5 h-5 text-[#460E2F]" />}
+                {title.toLowerCase().includes('theme') && <Palette className="w-5 h-5 text-[#460E2F]" />}
+                {title.toLowerCase().includes('judges') && <Users2Icon className="w-5 h-5 text-[#460E2F]" />}
+                {title.toLowerCase().includes('location') && <MapPin className="w-5 h-5 text-[#460E2F]" />}
+                {title.toLowerCase().includes('requirements') && <WrenchIcon className="w-5 h-5 text-[#460E2F]" />}
+                <h3 className="font-semibold text-lg text-[#460E2F]">{title}</h3>
               </div>
-              {content.map((line, i) => (
-                <div key={i} className="text-base leading-relaxed ml-4 tracking-normal font-normal antialiased">
-                  {line.startsWith('-') ? (
-                    <span className="flex items-start">
-                      <span className="mr-2 text-[#460E2F]">•</span>
-                      <span className="text-[#212120]">
-                        {line.substring(2).replace(/'/g, "&apos;")}
-                      </span>
-                    </span>
-                  ) : line.replace(/'/g, "&apos;")}
-                </div>
-              ))}
+              <div className="space-y-2 ml-7">
+                {content.map((line, i) => (
+                  <div key={i} className="text-base leading-relaxed tracking-normal">
+                    {line.startsWith('-') ? (
+                      <div className="flex items-start space-x-2">
+                        <span className="text-[#460E2F] mt-1.5">•</span>
+                        <span className="text-[#212120]/90">
+                          {line.substring(2).replace(/'/g, "&apos;")}
+                        </span>
+                      </div>
+                    ) : (
+                      <p className="text-[#212120]/90">{line.replace(/'/g, "&apos;")}</p>
+                    )}
+                  </div>
+                ))}
+              </div>
             </div>
           );
         })}
@@ -605,47 +640,149 @@ export function EnhancedRegistrationFormComponent() {
                               <p className="text-sm text-[#212120]/70">{workshop.description}</p>
                             </div>
                           </div>
-                          <Dialog>
+                          
+
+<Dialog>
   <DialogTrigger asChild>
     <Button variant="outline" size="sm" className="border-[#460E2F] text-[#460E2F] hover:bg-[#D2DDDE]/20">
       <Info className="w-4 h-4 mr-2" />
       Details
     </Button>
   </DialogTrigger>
-  <DialogContent className="sm:max-w-[425px] bg-white shadow-lg border-0">
-    <DialogHeader className="pb-4">
-      <DialogTitle className="text-[#460E2F] text-xl font-bold tracking-normal">
-        {workshop.label}
-      </DialogTitle>
+  <DialogContent className="sm:max-w-[550px] bg-white shadow-xl border-0">
+    <DialogHeader>
+      <div className="flex items-center space-x-3 mb-6">
+        <workshop.icon className="w-10 h-10 text-[#460E2F]" />
+        <div>
+          <DialogTitle className="text-[#460E2F] text-2xl font-bold">
+            {workshop.label}
+          </DialogTitle>
+          <p className="text-[#212120]/70 text-base mt-1">{workshop.description}</p>
+        </div>
+      </div>
     </DialogHeader>
-    <ScrollArea className="mt-2 max-h-[60vh]">
-      <div className="space-y-4 pr-4">
-        {workshop.details.split('\n\n').map((section, index) => {
-          const [title, ...content] = section.split('\n');
-          return (
-            <div key={index} className="text-[#212120] antialiased">
-              <div className="font-bold mb-2 tracking-normal text-base">
-                {title}
-              </div>
-              {content.map((line, i) => (
-                <div key={i} className="text-base leading-relaxed ml-4 tracking-normal font-normal antialiased">
-                  {line.startsWith('-') ? (
-                    <span className="flex items-start">
-                      <span className="mr-2 text-[#460E2F]">•</span>
-                      <span className="text-[#212120]">
-                        {line.substring(2).replace(/'/g, "&apos;")}
-                      </span>
-                    </span>
-                  ) : line.replace(/'/g, "&apos;")}
-                </div>
+    <ScrollArea className="mt-4 max-h-[65vh]">
+      <div className="space-y-8 pr-6">
+        {/* Event Details Section */}
+        <div className="space-y-4">
+          <div className="flex items-center space-x-3">
+            <MapPin className="w-5 h-5 text-[#460E2F]" />
+            <span className="text-[#460E2F] font-bold text-lg">Mode:</span> 
+            <span className="font-semibold">Offline</span>
+          </div>
+          
+          <div className="flex items-center space-x-3">
+            <Users2Icon className="w-5 h-5 text-[#460E2F]" />
+            <span className="text-[#460E2F] font-bold text-lg">Team size:</span>
+            <span>Individual or group of 2</span>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <UserCheckIcon className="w-5 h-5 text-[#460E2F]" />
+            <span className="text-[#460E2F] font-bold text-lg">Judges:</span>
+            <span>Mr. Sunil Shukla & Dr. Rushit Dubal</span>
+          </div>
+
+          <div className="flex items-center space-x-3">
+            <MapPin className="w-5 h-5 text-[#460E2F]" />
+            <span className="text-[#460E2F] font-bold text-lg">Location:</span>
+            <span>Theatre</span>
+          </div>
+        </div>
+
+        {/* Requirements Section */}
+        <div className="space-y-3">
+          <div className="flex items-center space-x-3 border-b border-gray-100 pb-2">
+            <WrenchIcon className="w-5 h-5 text-[#460E2F]" />
+            <span className="text-[#460E2F] font-bold text-lg">Requirements:</span>
+          </div>
+          <ul className="ml-8 space-y-2">
+            {workshop.details.match(/Requirements:([^]*?)(?=\n\n|\n[A-Z]|$)/s)?.[1]
+              .split('\n')
+              .filter(item => item.trim().startsWith('-'))
+              .map((item, index) => (
+                <li key={index} className="text-[#212120] flex items-center space-x-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#460E2F]" />
+                  <span>{item.replace('-', '').trim()}</span>
+                </li>
               ))}
+          </ul>
+        </div>
+
+        {/* Categories Section */}
+        <div className="space-y-3">
+          <div className="flex items-center space-x-3 border-b border-gray-100 pb-2">
+            <GraduationCap className="w-5 h-5 text-[#460E2F]" />
+            <span className="text-[#460E2F] font-bold text-lg">Categories:</span>
+          </div>
+          <ul className="ml-8 space-y-2">
+            <li className="text-[#212120] flex items-center space-x-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#460E2F]" />
+              <span>10+2 & College Students</span>
+            </li>
+            <li className="text-[#212120] flex items-center space-x-2">
+              <span className="w-1.5 h-1.5 rounded-full bg-[#460E2F]" />
+              <span>Working professionals</span>
+            </li>
+          </ul>
+        </div>
+
+        {/* Deliverables Section */}
+        <div className="space-y-3">
+          <div className="flex items-center space-x-3 border-b border-gray-100 pb-2">
+            <PackageIcon className="w-5 h-5 text-[#460E2F]" />
+            <span className="text-[#460E2F] font-bold text-lg">Deliverables:</span>
+          </div>
+          <ul className="ml-8 space-y-2">
+            {workshop.details.match(/Deliverables:([^]*?)(?=\n\n|\n[A-Z]|$)/s)?.[1]
+              .split('\n')
+              .filter(item => item.trim().startsWith('-'))
+              .map((item, index) => (
+                <li key={index} className="text-[#212120] flex items-center space-x-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#460E2F]" />
+                  <span>{item.replace('-', '').trim()}</span>
+                </li>
+              ))}
+          </ul>
+        </div>
+
+        {/* Overview Section */}
+        <div className="space-y-3">
+          <div className="flex items-center space-x-3 border-b border-gray-100 pb-2">
+            <BookOpen className="w-5 h-5 text-[#460E2F]" />
+            <span className="text-[#460E2F] font-bold text-lg">Overview:</span>
+          </div>
+          <p className="ml-8 text-[#212120] leading-relaxed">
+            {workshop.details.match(/Overview:([^]*?)(?=\n\n|\n[A-Z]|$)/s)?.[1].trim()}
+          </p>
+        </div>
+
+        {/* Rules Section (if present in workshop.details) */}
+        {workshop.details.includes('Rules:') && (
+          <div className="space-y-3">
+            <div className="flex items-center space-x-3 border-b border-gray-100 pb-2">
+              <ScrollTextIcon className="w-5 h-5 text-[#460E2F]" />
+              <span className="text-[#460E2F] font-bold text-lg">Rules:</span>
             </div>
-          );
-        })}
+            <ul className="ml-8 space-y-2">
+              {workshop.details.match(/Rules:([^]*?)(?=\n\n|\n[A-Z]|$)/s)?.[1]
+                .split('\n')
+                .filter(item => item.trim().startsWith('-'))
+                .map((item, index) => (
+                  <li key={index} className="text-[#212120] flex items-center space-x-2">
+                    <span className="w-1.5 h-1.5 rounded-full bg-[#460E2F]" />
+                    <span>{item.replace('-', '').trim()}</span>
+                  </li>
+                ))}
+            </ul>
+          </div>
+        )}
       </div>
     </ScrollArea>
   </DialogContent>
 </Dialog>
+
+
                         </div>
                       </div>
                     </Label>
@@ -707,6 +844,9 @@ export function EnhancedRegistrationFormComponent() {
         return null
     }
   }
+
+
+
 
   const handleSubmit = async () => {
     if (validateStep()) {
@@ -778,17 +918,25 @@ export function EnhancedRegistrationFormComponent() {
   return (
     <AnimatedBackground>
       <div className="min-h-screen flex flex-col items-center pt-12 px-4">
-        <div className="w-full max-w-2xl">
-          <motion.div
-            initial={{ opacity: 0, y: -20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-            className="text-center mb-8"
-          >
-            <h1 className="text-4xl font-bold text-white">Bhopal Design Festival</h1>
-            <p className="text-xl text-white/90 mt-2">2nd Edition</p>
-            <p className="text-lg text-white/80 mt-1">21st - 23rd November 2024</p>
-          </motion.div>
+      <div className="w-full max-w-2xl mb-4">
+  <Image
+    src="/bdf-logo.svg"
+    alt="Bhopal Design Festival Logo"
+    width={150}
+    height={150}
+    className="mx-auto"
+    style={{ filter: 'hue-rotate(60deg) brightness(1.2)' }}
+  />
+</div>
+  <div className="w-full max-w-2xl">
+    <motion.div
+      initial={{ opacity: 0, y: -20 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.5 }}
+      className="text-center mb-4"
+    >
+      <p className="text-xl text-white">21<sup>st</sup> - 23<sup>rd</sup> November 2024</p>
+    </motion.div>
 
           <Card className="bg-white/95 backdrop-blur-sm shadow-xl border-0">
             <CardHeader>
