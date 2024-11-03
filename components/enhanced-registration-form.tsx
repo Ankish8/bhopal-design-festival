@@ -642,6 +642,8 @@ export function EnhancedRegistrationFormComponent() {
                           </div>
                           
 
+                          
+
 <Dialog>
   <DialogTrigger asChild>
     <Button variant="outline" size="sm" className="border-[#460E2F] text-[#460E2F] hover:bg-[#D2DDDE]/20">
@@ -697,19 +699,16 @@ export function EnhancedRegistrationFormComponent() {
             <span className="text-[#460E2F] font-bold text-lg">Requirements:</span>
           </div>
           <ul className="ml-8 space-y-2">
-  {workshop.details
-    .split('\n\n')
-    .find(section => section.startsWith('Requirements:'))
-    ?.split('\n')
-    .slice(1)
-    .filter(item => item.trim().startsWith('-'))
-    .map((item, index) => (
-      <li key={index} className="text-[#212120] flex items-center space-x-2">
-        <span className="w-1.5 h-1.5 rounded-full bg-[#460E2F]" />
-        <span>{item.replace('-', '').trim()}</span>
-      </li>
-    ))}
-</ul>
+            {workshop.details.match(/Requirements:([^]*?)(?=\n\n|\n[A-Z]|$)/s)?.[1]
+              .split('\n')
+              .filter(item => item.trim().startsWith('-'))
+              .map((item, index) => (
+                <li key={index} className="text-[#212120] flex items-center space-x-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#460E2F]" />
+                  <span>{item.replace('-', '').trim()}</span>
+                </li>
+              ))}
+          </ul>
         </div>
 
         {/* Categories Section */}
@@ -737,19 +736,16 @@ export function EnhancedRegistrationFormComponent() {
             <span className="text-[#460E2F] font-bold text-lg">Deliverables:</span>
           </div>
           <ul className="ml-8 space-y-2">
-  {workshop.details
-    .split('\n\n')
-    .find(section => section.startsWith('Deliverables:'))
-    ?.split('\n')
-    .slice(1)
-    .filter(item => item.trim().startsWith('-'))
-    .map((item, index) => (
-      <li key={index} className="text-[#212120] flex items-center space-x-2">
-        <span className="w-1.5 h-1.5 rounded-full bg-[#460E2F]" />
-        <span>{item.replace('-', '').trim()}</span>
-      </li>
-    ))}
-</ul>
+            {workshop.details.match(/Deliverables:([^]*?)(?=\n\n|\n[A-Z]|$)/s)?.[1]
+              .split('\n')
+              .filter(item => item.trim().startsWith('-'))
+              .map((item, index) => (
+                <li key={index} className="text-[#212120] flex items-center space-x-2">
+                  <span className="w-1.5 h-1.5 rounded-full bg-[#460E2F]" />
+                  <span>{item.replace('-', '').trim()}</span>
+                </li>
+              ))}
+          </ul>
         </div>
 
         {/* Overview Section */}
@@ -759,13 +755,8 @@ export function EnhancedRegistrationFormComponent() {
             <span className="text-[#460E2F] font-bold text-lg">Overview:</span>
           </div>
           <p className="ml-8 text-[#212120] leading-relaxed">
-  {workshop.details
-    .split('\n\n')
-    .find(section => section.startsWith('Overview:'))
-    ?.split('\n')
-    .slice(1)
-    .join('\n')}
-</p>
+            {workshop.details.match(/Overview:([^]*?)(?=\n\n|\n[A-Z]|$)/s)?.[1].trim()}
+          </p>
         </div>
 
         {/* Rules Section (if present in workshop.details) */}
