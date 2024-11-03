@@ -106,7 +106,7 @@ const competitions = [
     icon: Lightbulb, 
     description: "Solve real-world problems with innovative solutions.",
     details: `Mode: Digital/Physical
-Team size: 4-5 members
+Team size: Group of 4-5 members
 Categories:
 - 10+2 & College Students
 - Working professionals
@@ -114,9 +114,22 @@ Categories:
 Deliverables:
 - Paper prototype
 - Brief description (50-100 words)
-- Final design process
+- Final design process (Physical or digital)
 
-Problem statements include topics on student motivation, helping beggars, artist product sales, student meals, and Bhopal city guide.
+Main Problem Statements:
+- How might we help students to get motivated and attend the classes?
+- How might we help a beggar to live his life without begging?
+- How might we help needy artists to sell their products?
+- How might we help students for cooking and having nutritious and pocket friendly meals?
+- Design a Guidebook of 5 Pages for a new person in the city of Bhopal?
+- Design a web page for a new person in the city of Bhopal?
+
+Rules:
+- Design should reflect the concepts of given brief
+- Each team may submit only one entry
+- Design submitted must be original creations
+- Plagiarism or copyright infringement will result in disqualification
+- The design should be submitted along with the title and write up
 
 Duration: November 21st-23rd morning`
   },
@@ -124,21 +137,75 @@ Duration: November 21st-23rd morning`
     value: "visual-storytelling", 
     label: "Visual Storytelling", 
     icon: Camera, 
-    description: "Create a compelling photo story.",
+    description: "Create a compelling photo story on a given theme.",
     details: `Mode: Offline
 Team size: Maximum 4 members
 Judges: Mr. Sunil Shukla & Dr. Rushit Dubal
-Requirements: DSLR/Digital Camera/Mobile Phone with good camera, Basic Stationery
+Location: Theatre
+Requirements:
+- DSLR/Digital Camera/Mobile Phone with good camera
+- Basic Stationery
+
 Categories:
 - 10+2 & College Students
 - Working professionals
 
 Deliverables:
-- 5-7 images photo story
-- Title and brief description (50-100 words)
-- Photo layout presentation
-- Optional: Behind-the-scenes write-up`
+- Themed Photo Series (5-7 images)
+- Title and Brief Description (50-100 words)
+- Photo Layout Presentation
+- Optional: Behind-the-scenes write-up
+
+Rules:
+- Story should reflect the given theme/s
+- Each team may submit only one entry
+- Stories must be original creations
+- Plagiarism or copyright infringement will result in disqualification
+- Submit with all supporting documents
+
+Evaluation Criteria:
+- Interpretation of the theme
+- Creativity and originality
+- Aesthetic Sensibility
+- Overall visual impact
+
+Note: Brief will be given on the spot`
   },
+  {
+    value: "fashion-show",
+    label: "Ethereal Flora Fashion Show",
+    icon: Palette,
+    description: "A Journey into Nature's Essence",
+    details: `Mode: Offline
+Team size: Individual or team
+Location: Stage/Ramp
+Judges: Ms. Saba Tiwari, Ms. Noopur Tiwari
+
+Theme: Ethereal Flora: A Journey into Nature's Essence
+
+Overview:
+This event celebrates the harmony between nature's beauty and sustainable fashion, reimagining garments inspired by the resilience and simplicity of nature. Features light, flowing silhouettes, organic motifs, and artisanal techniques.
+
+Requirements:
+- Minimum 3-5 dresses per collection
+- Use of sustainable materials (organic cotton, linen, recycled textiles)
+
+Deliverables:
+- Nature-Inspired Garment Collection (3-5 looks)
+- Design Concept Statement (100-150 words per piece)
+
+Rules:
+- Dress must reflect the given theme
+- Each participant/team may submit only one entry
+- Entries must be original creations
+- No plagiarism or copyright infringement
+
+Evaluation Criteria:
+- Interpretation of the theme
+- Creativity and originality
+- Aesthetic Sensibility
+- Overall visual impact`
+  }
 ]
 
 const workshops: Workshops = {
@@ -149,13 +216,22 @@ const workshops: Workshops = {
       icon: Palette, 
       description: "Learn LinoCut techniques with Ravindra Shankar Roy.",
       details: `Mode: Offline
-Team size: Individual or pair
-Requirements: Paper, Basic Stationery, Lino cut tools
-Deliverables:
-- LinoCut Techniques demonstration
-- Personal artwork creation
-- 2-3 final prints (single-color and multi-layered)
-- Lino Carving Skills Guide`
+    Team size: Individual or group of 2
+    Requirements:
+    - Paper
+    - Basic Stationery
+    - Lino cut tools
+    
+    Eligibility: Anyone above the age of 18
+    
+    Overview:
+    In this hands-on workshop, participants will learn to design, carve, and print their own unique artworks using linoleum blocks (Lino Sheets). Guided by expert techniques, this workshop will enable participants to transform their ideas into beautifully textured, tactile prints.
+    
+    Deliverables:
+    - Introduction to LinoCut Techniques: Step-by-step demonstration of design transfer, carving, and inking
+    - Personalized Artwork: Each participant will create and print their own design on paper
+    - Take-Home Prints: 2-3 final prints in both single-color and multi-layered formats
+    - Lino Carving Skills Guide: Handout or PDF on tips, tools, and techniques for future practice`
     },
     { 
       value: "fashion-photography", 
@@ -163,13 +239,20 @@ Deliverables:
       icon: Camera, 
       description: "Master fashion photography with Rohit Suri.",
       details: `Mode: Offline
-Team size: Individual or pair
-Requirements: DSLR with different lenses
-Deliverables:
-- Technical camera training
-- Styling & model direction skills
-- 2-3 portfolio shots
-- Photo editing guide`
+    Team size: Individual or group of 2
+    Requirements:
+    - DSLR with different lenses
+    
+    Eligibility: Anyone above the age of 18
+    
+    Overview:
+    Step into the world of Fashion Photography, where style and storytelling unite through the lens. This workshop dives into the essentials of capturing fashion, from composition and lighting to model direction and styling. Perfect for beginners and enthusiasts alike, this experience will teach participants how to create impactful, magazine-worthy images that elevate their creative vision.
+    
+    Deliverables:
+    - Technical Basics: Training in camera settings, lighting techniques, and composition specific to fashion
+    - Styling & Model Direction: Tips and techniques on styling outfits and guiding models for expressive poses
+    - Portfolio Shots: Each participant will shoot 2-3 styled looks for their portfolio
+    - Editing Guide: An introduction to photo editing tools/softwares for fashion, with basic tips on enhancing images`
     },
   ],
   "November 22nd, 2024": [
@@ -179,13 +262,33 @@ Deliverables:
       icon: Newspaper, 
       description: "Explore paper techniques inspired by nature.",
       details: `Mode: Offline
-Team size: Individual or group
-Requirements: Paper, Basic Stationery, Laptops (if digital)
-Deliverables:
-- Ideation sketches
-- Final hand-drawn font sheets
-- Final Paper Artwork/design
-- Brief description (50-100 words)`
+    Team size: Individual or group
+    Requirements:
+    - Paper
+    - Basic Stationery
+    - Laptops (if Digital)
+    
+    Eligibility: Anyone above the age of 18
+    
+    Overview:
+    This workshop challenges students and enthusiasts to express the theme "Ways of Nature" through different types of Paper techniques to replicate nature. The workshop seeks to explore the transformative power of design and how nature can inspire change, evolution and design.
+    
+    Deliverables:
+    - Ideation sketches and final hand-drawn font sheets
+    - Final Paper Artwork/design curated after the workshop
+    - Brief description (50-100 words) explaining the design concept
+    
+    Rules:
+    - Design should reflect the concepts of nature and biomimicry
+    - Each participant/team may submit only one entry
+    - Design submitted must be original creations
+    - Plagiarism or copyright infringement will result in disqualification
+    
+    Evaluation Criteria:
+    - Interpretation of the theme
+    - Creativity and originality
+    - Design aesthetics
+    - Overall visual impact`
     },
     { 
       value: "space-design", 
@@ -193,14 +296,27 @@ Deliverables:
       icon: Building, 
       description: "Create 3D architectural models with Ar. Pritam Lenka.",
       details: `Mode: Offline
-Team size: Individual or group of max 3
-Requirements: Foam board, cardboard, cutting mats, precision knives, glue, rulers, pencils, scale rulers
-Deliverables:
-- Space design principles introduction
-- Model-making techniques
-- Scaled model project
-- Material selection guide`
+    Team size: Individual or group of maximum 3
+    Requirements:
+    - Foam board, cardboard
+    - Cutting mats, precision knives
+    - Glue, rulers, pencils
+    - Scale rulers
+    - Basic cutting tools like utility knives
+    - Metal-edged ruler
+    
+    Eligibility: Anyone above the age of 18
+    
+    Overview:
+    Dive into the fundamentals of Space Design through hands-on architectural modeling. This workshop introduces participants to model-making techniques that translate spatial concepts into tangible, scaled representations. Perfect for aspiring designers, it provides foundational skills in visualizing, planning, and constructing architectural models.
+    
+    Deliverables:
+    - Introduction to Space Design Principles: Basics of scale, proportion, and spatial planning
+    - Model-Making Techniques: Step-by-step guidance on using tools and materials for architectural models
+    - Scaled Model Project: Each participant will complete a scaled-down model of a room or simple structure
+    - Material Selection Guide: Handout or PDF on materials, tools, and techniques for future projects`
     },
+    
   ],
 }
 
@@ -408,40 +524,46 @@ export function EnhancedRegistrationFormComponent() {
                           </div>
                         </div>
                         <Dialog>
-                          <DialogTrigger asChild>
-                            <Button variant="outline" size="sm" className="border-[#460E2F] text-[#460E2F] hover:bg-[#D2DDDE]/20">
-                              <Info className="w-4 h-4 mr-2" />
-                              Details
-                            </Button>
-                          </DialogTrigger>
-                          <DialogContent className="sm:max-w-[425px] bg-white/95 backdrop-blur-sm">
-                            <DialogHeader className="pb-4">
-                              <DialogTitle className="text-[#460E2F] text-xl font-semibold">{competition.label}</DialogTitle>
-                            </DialogHeader>
-                            <ScrollArea className="mt-2 max-h-[60vh] overflow-auto pr-4">
-                              <div className="space-y-4">
-                                {competition.details.split('\n\n').map((section, index) => {
-                                  const [title, ...content] = section.split('\n');
-                                  return (
-                                    <div key={index} className="text-[#212120]">
-                                      <div className="font-medium mb-1">{title}</div>
-                                      {content.map((line, i) => (
-                                        <div key={i} className="text-sm leading-relaxed ml-4">
-                                          {line.startsWith('-') ? (
-                                            <span className="flex">
-                                              <span className="mr-2">•</span>
-                                              {line.substring(2).replace(/'/g, "&apos;")}
-                                            </span>
-                                          ) : line.replace(/'/g, "&apos;")}
-                                        </div>
-                                      ))}
-                                    </div>
-                                  );
-                                })}
-                              </div>
-                            </ScrollArea>
-                          </DialogContent>
-                        </Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline" size="sm" className="border-[#460E2F] text-[#460E2F] hover:bg-[#D2DDDE]/20">
+      <Info className="w-4 h-4 mr-2" />
+      Details
+    </Button>
+  </DialogTrigger>
+  <DialogContent className="sm:max-w-[425px] bg-white shadow-lg border-0">
+    <DialogHeader className="pb-4">
+      <DialogTitle className="text-[#460E2F] text-xl font-bold tracking-normal">
+        {competition.label}
+      </DialogTitle>
+    </DialogHeader>
+    <ScrollArea className="mt-2 max-h-[60vh]">
+      <div className="space-y-4 pr-4">
+        {competition.details.split('\n\n').map((section, index) => {
+          const [title, ...content] = section.split('\n');
+          return (
+            <div key={index} className="text-[#212120] antialiased">
+              <div className="font-bold mb-2 tracking-normal text-base">
+                {title}
+              </div>
+              {content.map((line, i) => (
+                <div key={i} className="text-base leading-relaxed ml-4 tracking-normal font-normal antialiased">
+                  {line.startsWith('-') ? (
+                    <span className="flex items-start">
+                      <span className="mr-2 text-[#460E2F]">•</span>
+                      <span className="text-[#212120]">
+                        {line.substring(2).replace(/'/g, "&apos;")}
+                      </span>
+                    </span>
+                  ) : line.replace(/'/g, "&apos;")}
+                </div>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+    </ScrollArea>
+  </DialogContent>
+</Dialog>
                       </div>
                     </div>
                   </Label>
@@ -484,40 +606,46 @@ export function EnhancedRegistrationFormComponent() {
                             </div>
                           </div>
                           <Dialog>
-                            <DialogTrigger asChild>
-                              <Button variant="outline" size="sm" className="border-[#460E2F] text-[#460E2F] hover:bg-[#D2DDDE]/20">
-                                <Info className="w-4 h-4 mr-2" />
-                                Details
-                              </Button>
-                            </DialogTrigger>
-                            <DialogContent className="sm:max-w-[425px] bg-white/95 backdrop-blur-sm">
-                              <DialogHeader className="pb-4">
-                                <DialogTitle className="text-[#460E2F] text-xl font-semibold">{workshop.label}</DialogTitle>
-                              </DialogHeader>
-                              <ScrollArea className="mt-2 max-h-[60vh] overflow-auto pr-4">
-                                <div className="space-y-4">
-                                  {workshop.details.split('\n\n').map((section, index) => {
-                                    const [title, ...content] = section.split('\n');
-                                    return (
-                                      <div key={index} className="text-[#212120]">
-                                        <div className="font-medium mb-1">{title}</div>
-                                        {content.map((line, i) => (
-                                          <div key={i} className="text-sm leading-relaxed ml-4">
-                                            {line.startsWith('-') ? (
-                                              <span className="flex">
-                                                <span className="mr-2">•</span>
-                                                {line.substring(2).replace(/'/g, "&apos;")}
-                                              </span>
-                                            ) : line.replace(/'/g, "&apos;")}
-                                          </div>
-                                        ))}
-                                      </div>
-                                    );
-                                  })}
-                                </div>
-                              </ScrollArea>
-                            </DialogContent>
-                          </Dialog>
+  <DialogTrigger asChild>
+    <Button variant="outline" size="sm" className="border-[#460E2F] text-[#460E2F] hover:bg-[#D2DDDE]/20">
+      <Info className="w-4 h-4 mr-2" />
+      Details
+    </Button>
+  </DialogTrigger>
+  <DialogContent className="sm:max-w-[425px] bg-white shadow-lg border-0">
+    <DialogHeader className="pb-4">
+      <DialogTitle className="text-[#460E2F] text-xl font-bold tracking-normal">
+        {workshop.label}
+      </DialogTitle>
+    </DialogHeader>
+    <ScrollArea className="mt-2 max-h-[60vh]">
+      <div className="space-y-4 pr-4">
+        {workshop.details.split('\n\n').map((section, index) => {
+          const [title, ...content] = section.split('\n');
+          return (
+            <div key={index} className="text-[#212120] antialiased">
+              <div className="font-bold mb-2 tracking-normal text-base">
+                {title}
+              </div>
+              {content.map((line, i) => (
+                <div key={i} className="text-base leading-relaxed ml-4 tracking-normal font-normal antialiased">
+                  {line.startsWith('-') ? (
+                    <span className="flex items-start">
+                      <span className="mr-2 text-[#460E2F]">•</span>
+                      <span className="text-[#212120]">
+                        {line.substring(2).replace(/'/g, "&apos;")}
+                      </span>
+                    </span>
+                  ) : line.replace(/'/g, "&apos;")}
+                </div>
+              ))}
+            </div>
+          );
+        })}
+      </div>
+    </ScrollArea>
+  </DialogContent>
+</Dialog>
                         </div>
                       </div>
                     </Label>
