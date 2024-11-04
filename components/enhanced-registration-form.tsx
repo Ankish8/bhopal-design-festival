@@ -1,6 +1,6 @@
 "use client"
 
-import { useState, useRef, useEffect } from "react"
+import { useState, useRef, useEffect, MouseEvent } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -52,7 +52,10 @@ type Workshop = {
   description: string;
   details: string;
 }
-
+interface FilteredSuggestion {
+  official: string;
+  matches: string[];
+}
 type Workshops = {
   [K in WorkshopDate]: Workshop[];
 }
@@ -425,80 +428,87 @@ export function EnhancedRegistrationFormComponent() {
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [showSuggestions, setShowSuggestions] = useState(false);
-  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
-  const suggestionRef = useRef(null);
+const [filteredSuggestions, setFilteredSuggestions] = useState<FilteredSuggestion[]>([]);
 
-  const handleOrganizationInput = (input) => {
-    updateFormData("organizationName", input);
-    
-    if (!input) {
-      setShowSuggestions(false);
-      return;
-    }
-  
-    const filtered = [];
-    const isDPSSearch = input.toLowerCase() === "dps" || 
-                       input.toLowerCase().includes("delhi public");
-  
-    Object.entries(organizationMappings).forEach(([official, variants]) => {
-      // Special handling for DPS schools
-      if (formData.organizationType === "school" && isDPSSearch) {
-        if (official.toLowerCase().includes("delhi public school")) {
-          filtered.push({
-            official: official,
-            matches: variants.filter(name => 
-              // Exclude the generic "DPS" variant but include specific ones
-              !(name === "DPS" || name === "Delhi Public School") &&
-              name.toLowerCase().includes(input.toLowerCase())
-            )
-          });
-        }
-      }
-      // Regular search for other cases
-      else if (
-        official.toLowerCase().includes(input.toLowerCase()) || 
-        variants.some(variant => variant.toLowerCase().includes(input.toLowerCase()))
-      ) {
-        // Filter based on organization type
-        const shouldInclude = 
-          (formData.organizationType === "school" && official.toLowerCase().includes("school")) ||
-          (formData.organizationType === "college" && 
-            (official.toLowerCase().includes("college") || 
-             official.toLowerCase().includes("university"))) ||
-          (formData.organizationType === "professional" && 
-            !official.toLowerCase().includes("school") && 
-            !official.toLowerCase().includes("university"));
-  
-        if (shouldInclude) {
-          filtered.push({
-            official: official,
-            matches: variants.filter(name => 
-              name.toLowerCase().includes(input.toLowerCase())
-            )
-          });
-        }
-      }
-    });
-  
-    // Sort DPS schools alphabetically if it's a DPS search
-    if (isDPSSearch) {
-      filtered.sort((a, b) => a.official.localeCompare(b.official));
-    }
-  
-    setFilteredSuggestions(filtered);
-    setShowSuggestions(filtered.length > 0);
-  };
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (suggestionRef.current && !suggestionRef.current.contains(event.target)) {
+
+  
+
+ 
+  
+  const handleOrganizationInput = (input: string) => {
+      updateFormData("organizationName", input);
+      
+      if (!input) {
         setShowSuggestions(false);
+        return;
       }
+    
+      const filtered: FilteredSuggestion[] = [];
+      const isDPSSearch = input.toLowerCase() === "dps" || 
+                         input.toLowerCase().includes("delhi public");
+    
+      Object.entries(organizationMappings).forEach(([official, variants]) => {
+        // Special handling for DPS schools
+        if (formData.organizationType === "school" && isDPSSearch) {
+          if (official.toLowerCase().includes("delhi public school")) {
+            filtered.push({
+              official: official,
+              matches: variants.filter(name => 
+                // Exclude the generic "DPS" variant but include specific ones
+                !(name === "DPS" || name === "Delhi Public School") &&
+                name.toLowerCase().includes(input.toLowerCase())
+              )
+            });
+          }
+        }
+        // Regular search for other cases
+        else if (
+          official.toLowerCase().includes(input.toLowerCase()) || 
+          variants.some(variant => variant.toLowerCase().includes(input.toLowerCase()))
+        ) {
+          // Filter based on organization type
+          const shouldInclude = 
+            (formData.organizationType === "school" && official.toLowerCase().includes("school")) ||
+            (formData.organizationType === "college" && 
+              (official.toLowerCase().includes("college") || 
+               official.toLowerCase().includes("university"))) ||
+            (formData.organizationType === "professional" && 
+              !official.toLowerCase().includes("school") && 
+              !official.toLowerCase().includes("university"));
+    
+          if (shouldInclude) {
+            filtered.push({
+              official: official,
+              matches: variants.filter(name => 
+                name.toLowerCase().includes(input.toLowerCase())
+              )
+            });
+          }
+        }
+      });
+    
+      // Sort DPS schools alphabetically if it's a DPS search
+      if (isDPSSearch) {
+        filtered.sort((a, b) => a.official.localeCompare(b.official));
+      }
+    
+      setFilteredSuggestions(filtered);
+      setShowSuggestions(filtered.length > 0);
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    const suggestionRef = useRef<HTMLDivElement | null>(null);
+
+    useEffect(() => {
+      function handleClickOutside(this: Document, e: Event) {
+        if (suggestionRef.current && !suggestionRef.current.contains(e.target as Node)) {
+          setShowSuggestions(false);
+        }
+      }
+    
+      document.addEventListener('mousedown', handleClickOutside);
+      return () => document.removeEventListener('mousedown', handleClickOutside);
+    }, []);
   
 
   const updateFormData = (field: keyof FormData | string, value: string | Record<string, string>) => {
@@ -716,7 +726,7 @@ export function EnhancedRegistrationFormComponent() {
         className="border-[#D2DDDE] focus:border-[#460E2F] focus:ring-[#460E2F]"
       />
       {showSuggestions && filteredSuggestions.length > 0 && (
-        <div className="absolute z-50 w-full mt-1 bg-white rounded-md shadow-lg border border-[#D2DDDE]">
+        <div ref={suggestionRef} className="absolute z-50 w-full mt-1 bg-white rounded-md shadow-lg border border-[#D2DDDE]">
           <ul className="max-h-60 overflow-auto py-1">
             {filteredSuggestions.map((suggestion, index) => (
               <li
