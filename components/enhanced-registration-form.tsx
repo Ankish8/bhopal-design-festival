@@ -139,7 +139,6 @@ Rules
 - Designs submitted must be original creations
 - Plagiarism or copyright infringement will result in disqualification
 - The design should be submitted along with the title and write-up
-- Submissions must be sent to [Design Fest Email] by specified deadline
 
 Requirements
 - A4 Paper
