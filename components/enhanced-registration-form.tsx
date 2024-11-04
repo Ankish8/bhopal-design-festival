@@ -271,14 +271,20 @@ const workshops: Workshops = {
       label: "Printmaking Workshop", 
       icon: Palette, 
       description: "Explore LinoCut printmaking techniques",
-      details: `Mode: Offline...`
+      details: `Mode: Offline
+
+Overview:
+In this hands-on workshop, participants will learn to design, carve, and print their own unique artworks using linoleum blocks (Lino Sheets). Guided by expert techniques, this workshop will enable participants to transform their ideas into beautifully textured, tactile prints.`
     },
     { 
       value: "fashion-photography", 
       label: "Fashion Photography", 
       icon: Camera, 
       description: "Learn to capture captivating fashion imagery",
-      details: `Mode: Offline...`
+      details: `Mode: Offline
+
+Overview:
+Step into the world of Fashion Photography, where style and storytelling unite through the lens. This workshop dives into the essentials of capturing fashion, from composition and lighting to model direction and styling. Perfect for beginners and enthusiasts alike, this experience will teach participants how to create impactful, magazine-worthy images that elevate their creative vision.`
     },
   ],
   "November 22nd, 2024": [
@@ -287,28 +293,34 @@ const workshops: Workshops = {
       label: "Ways of Nature: Understanding Biomimicry", 
       icon: Newspaper, 
       description: "Explore paper techniques inspired by nature.",
-      details: `Mode: Offline...`
+      details: `Mode: Offline
+
+Overview:
+This workshop challenges students and enthusiasts to express the theme "Ways of Nature" through different types of Paper techniques to replicate nature. The workshop seeks to explore the transformative power of design and how nature can inspire change, evolution and design.`
     },
     { 
       value: "space-design", 
       label: "Space Design 3D Architectural Model", 
       icon: Building, 
       description: "Create impressive 3D architectural models",
-      details: `Mode: Offline...`
+      details: `Mode: Offline
+
+Overview:
+Dive into the fundamentals of Space Design through hands-on architectural modeling. This workshop introduces participants to model-making techniques that translate spatial concepts into tangible, scaled representations. Perfect for aspiring designers, it provides foundational skills in visualizing, planning, and constructing architectural models.`
     },
   ],
   "November 23rd, 2024": [
-    {
-      value: "life-between-frames",
-      label: "Life Between Frames",
-      icon: Camera,
-      description: "Learn the art of stop motion animation",
+    { 
+      value: "stop-motion", 
+      label: "Life Between Frames", 
+      icon: Camera, 
+      description: "Discover the art of stop motion animation",
       details: `Mode: Offline
 
 Overview:
 This stop motion workshop, "Life Between Frames" offers an engaging introduction to the art of stop motion animation. Participants will learn to bring inanimate objects to life, explore storytelling techniques, and discover the magic of creating movement frame by frame.`
-    }
-  ]
+    },
+  ],
 }
 
 const organizationMappings = {
