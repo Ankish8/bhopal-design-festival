@@ -1,6 +1,6 @@
 "use client"
 
-import { useState } from "react"
+import { useState, useRef, useEffect } from "react"
 import { motion, AnimatePresence } from "framer-motion"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader, CardTitle, CardDescription } from "@/components/ui/card"
@@ -43,7 +43,7 @@ import {
 } from "lucide-react"
 
 // Types and Interfaces
-type WorkshopDate = "November 21st, 2024" | "November 22nd, 2024";
+type WorkshopDate = "November 21st, 2024" | "November 22nd, 2024" | "November 23rd, 2024";
 
 type Workshop = {
   value: string;
@@ -58,7 +58,8 @@ type Workshops = {
 }
 
 interface FormData {
-  name: string;
+  firstName: string;
+  lastName: string;
   email: string;
   phone: string;
   organizationType: string;
@@ -107,116 +108,156 @@ const formSteps = [
 ]
 
 const organizationTypes = [
-  { value: "school", label: "School", icon: GraduationCap },
-  { value: "college", label: "College", icon: Building },
-  { value: "professional", label: "Professional", icon: Briefcase },
+  { value: "school", label: "School Student", icon: GraduationCap },
+  { value: "college", label: "College Student", icon: Building },
+  { value: "professional", label: "Working Professional", icon: Briefcase },
 ]
 const competitions = [
+  { 
+    value: "vernacular-logo", 
+    label: "Vernacular Logo Design", 
+    icon: BoxIcon, 
+    description: "Design a logo representing solutions to real-world challenges",
+    details: `Overview
+Let your imagination run wild and design a logo that represents solutions to real-world challenges. This contest encourages entries to unleash their creativity to develop a logo that captures the essence of making a difference and being innovative. The logo design should symbolize a given theme/concept and demonstrate their ability to communicate impactful messages through design.
+
+Mode
+Digital / Physical
+
+Categories
+School Student / College Student
+
+Team Size
+Individual
+
+Rules
+- Design should reflect the concepts of the given brief
+- Each participant/team may submit only one entry
+- Designs submitted must be original creations
+- Plagiarism or copyright infringement will result in disqualification
+- The design should be submitted along with the title and write-up
+- Submissions must be sent to [Design Fest Email] by specified deadline
+
+Requirements
+- A4 Paper
+- Basic Stationery
+- Laptop/tablets for digital mode
+
+Deliverables
+- Ideation, process, and any refinements made
+- Final design with an explanation of concept (50-100 words)
+- A4 paper size for physical submission
+- Original software file for digital submission (AI, SVG)
+
+Note
+The brief will be given on the spot`
+  },
   { 
     value: "visionary-ventures", 
     label: "Visionary Ventures", 
     icon: Lightbulb, 
-    description: "Solve real-world problems with innovative solutions.",
-    details: `Mode: Digital/Physical
-Team size: Group of 4-5 members
-Categories:
-- 10+2 & College Students
-- Working professionals
+    description: "Ideate and build solutions for communities",
+    details: `Overview
+This competition will unleash your creativity to the fullest, where you will Ideate and build a solution for communities. You will learn and apply a design thinking process to the given problem statement to create a better world.
 
-Deliverables:
-- Paper prototype
-- Brief description (50-100 words)
-- Final design process (Physical or digital)
+Mode
+Digital / Physical
 
-Main Problem Statements:
-- How might we help students to get motivated and attend the classes?
-- How might we help a beggar to live his life without begging?
-- How might we help needy artists to sell their products?
-- How might we help students for cooking and having nutritious and pocket friendly meals?
-- Design a Guidebook of 5 Pages for a new person in the city of Bhopal?
-- Design a web page for a new person in the city of Bhopal?
+Categories
+School Student / College Student
 
-Rules:
-- Design should reflect the concepts of given brief
-- Each team may submit only one entry
-- Design submitted must be original creations
+Team Size
+Group of 4-5
+
+Rules
+- The logo should reflect the concepts of the given brief
+- Each participant should submit only one entry
+- The logo design submitted must be an original creation
 - Plagiarism or copyright infringement will result in disqualification
-- The design should be submitted along with the title and write up
+- The logo design should be submitted along with the title and write-up
 
-Duration: November 21st-23rd morning`
+Requirements
+- Paper
+- Basic Stationery
+- Laptop/tablets for digital mode
+
+Deliverables
+- Paper prototype
+- Brief description (50-100 words) explaining the design concept
+- Final design process - Physical or digital (Max A3 Size)
+
+Note
+The brief will be given on the spot`
   },
   { 
     value: "visual-storytelling", 
     label: "Visual Storytelling", 
     icon: Camera, 
-    description: "Create a compelling photo story on a given theme.",
-    details: `Mode: Offline
-Team size: Maximum 4 members
-Judges: Mr. Sunil Shukla & Dr. Rushit Dubal
-Location: Theatre
-Requirements:
-- DSLR/Digital Camera/Mobile Phone with good camera
+    description: "Create compelling photo stories on given themes",
+    details: `Overview
+Unleash the power of storytelling through the lens with our Visual Storytelling Competition. Participants are challenged to create a compelling photo story based on a given theme, capturing emotions, narratives, and perspectives through a sequence of images. This competition encourages creativity, visual coherence, and the ability to convey a story without words.
+
+Mode
+Digital / Physical
+
+Categories
+School Student / College Student
+
+Team Size
+Group of 2 to 4
+
+Rules
+- Story should reflect the given theme/s
+- Each participant/team may submit only one entry
+- Stories submitted must be original creations
+- Plagiarism or copyright infringement will result in disqualification
+- Story should be submitted along with supporting documents
+
+Requirements
+- DSLR / Digital Camera / Mobile Phone with good Camera
 - Basic Stationery
 
-Categories:
-- 10+2 & College Students
-- Working professionals
+Deliverables
+- Themed Photo Series: 5-7 images that narrate a cohesive story
+- Title and Brief Description: 50-100 word caption explaining the story
+- Photo Layout Presentation: Digital submission with suggested layout
+- Behind-the-Scenes Insight (Optional): Short write-up on the process
 
-Deliverables:
-- Themed Photo Series (5-7 images)
-- Title and Brief Description (50-100 words)
-- Photo Layout Presentation
-- Optional: Behind-the-scenes write-up
-
-Rules:
-- Story should reflect the given theme/s
-- Each team may submit only one entry
-- Stories must be original creations
-- Plagiarism or copyright infringement will result in disqualification
-- Submit with all supporting documents
-
-Evaluation Criteria:
-- Interpretation of the theme
-- Creativity and originality
-- Aesthetic Sensibility
-- Overall visual impact
-
-Note: Brief will be given on the spot`
+Note
+The brief/Theme will be given on the spot`
   },
-  {
-    value: "fashion-show",
-    label: "Ethereal Flora Fashion Show",
-    icon: Palette,
+  { 
+    value: "fashion-show", 
+    label: "Ethereal Flora Fashion Show", 
+    icon: Palette, 
     description: "A Journey into Nature's Essence",
-    details: `Mode: Offline
-Team size: Individual or team
-Location: Stage/Ramp
-Judges: Ms. Saba Tiwari, Ms. Noopur Tiwari
+    details: `Overview
+We are delighted to invite you to participate in our upcoming fashion show-themed Ethereal Flora: A Journey into Nature's Essence. This event celebrates the harmony between nature's beauty and sustainable fashion, inviting designers to reimagine ensembles inspired by the resilience and simplicity of nature. We encourage the use of sustainable materials and embrace eco-conscious fashion that respects and reconnects with our environment.
 
-Theme: Ethereal Flora: A Journey into Nature's Essence
+Mode
+Offline
 
-Overview:
-This event celebrates the harmony between nature's beauty and sustainable fashion, reimagining garments inspired by the resilience and simplicity of nature. Features light, flowing silhouettes, organic motifs, and artisanal techniques.
+Categories
+School Student / College Student
 
-Requirements:
-- Minimum 3-5 dresses per collection
-- Use of sustainable materials (organic cotton, linen, recycled textiles)
+Team Size
+Group of 3 to 6
 
-Deliverables:
-- Nature-Inspired Garment Collection (3-5 looks)
-- Design Concept Statement (100-150 words per piece)
-
-Rules:
-- Dress must reflect the given theme
+Rules
+- Ensemble should reflect the given theme
 - Each participant/team may submit only one entry
-- Entries must be original creations
-- No plagiarism or copyright infringement
+- Entries submitted must be original creations
+- Plagiarism or copyright infringement will result in disqualification
 
-Evaluation Criteria:
-- Interpretation of the theme
-- Creativity and originality
-- Aesthetic Sensibility
-- Overall visual impact`
+Requirements
+- 3-5 ensembles (should include garments, accessories, styling and makeup)
+- Short description (100-150 words) and title (max. 5 words)
+- Music track for the show
+
+Deliverables
+- Nature-Inspired Ensemble Collection: 3-5 ensembles embodying Ethereal Flora theme
+- Incorporate sustainable materials for garments, accessories, styling and makeup
+- Design Concept Statement: Description and title explaining inspiration`
   }
 ]
 
@@ -226,45 +267,15 @@ const workshops: Workshops = {
       value: "printmaking", 
       label: "Printmaking Workshop", 
       icon: Palette, 
-      description: "Learn LinoCut techniques with Ravindra Shankar Roy.",
-      details: `Mode: Offline
-    Team size: Individual or group of 2
-    Requirements:
-    - Paper
-    - Basic Stationery
-    - Lino cut tools
-    
-    Eligibility: Anyone above the age of 18
-    
-    Overview:
-    In this hands-on workshop, participants will learn to design, carve, and print their own unique artworks using linoleum blocks (Lino Sheets). Guided by expert techniques, this workshop will enable participants to transform their ideas into beautifully textured, tactile prints.
-    
-    Deliverables:
-    - Introduction to LinoCut Techniques: Step-by-step demonstration of design transfer, carving, and inking
-    - Personalized Artwork: Each participant will create and print their own design on paper
-    - Take-Home Prints: 2-3 final prints in both single-color and multi-layered formats
-    - Lino Carving Skills Guide: Handout or PDF on tips, tools, and techniques for future practice`
+      description: "Explore LinoCut printmaking techniques",
+      details: `Mode: Offline...`
     },
     { 
       value: "fashion-photography", 
       label: "Fashion Photography", 
       icon: Camera, 
-      description: "Master fashion photography with Rohit Suri.",
-      details: `Mode: Offline
-    Team size: Individual or group of 2
-    Requirements:
-    - DSLR with different lenses
-    
-    Eligibility: Anyone above the age of 18
-    
-    Overview:
-    Step into the world of Fashion Photography, where style and storytelling unite through the lens. This workshop dives into the essentials of capturing fashion, from composition and lighting to model direction and styling. Perfect for beginners and enthusiasts alike, this experience will teach participants how to create impactful, magazine-worthy images that elevate their creative vision.
-    
-    Deliverables:
-    - Technical Basics: Training in camera settings, lighting techniques, and composition specific to fashion
-    - Styling & Model Direction: Tips and techniques on styling outfits and guiding models for expressive poses
-    - Portfolio Shots: Each participant will shoot 2-3 styled looks for their portfolio
-    - Editing Guide: An introduction to photo editing tools/softwares for fashion, with basic tips on enhancing images`
+      description: "Learn to capture captivating fashion imagery",
+      details: `Mode: Offline...`
     },
   ],
   "November 22nd, 2024": [
@@ -273,71 +284,132 @@ const workshops: Workshops = {
       label: "Ways of Nature: Understanding Biomimicry", 
       icon: Newspaper, 
       description: "Explore paper techniques inspired by nature.",
-      details: `Mode: Offline
-    Team size: Individual or group
-    Requirements:
-    - Paper
-    - Basic Stationery
-    - Laptops (if Digital)
-    
-    Eligibility: Anyone above the age of 18
-    
-    Overview:
-    This workshop challenges students and enthusiasts to express the theme "Ways of Nature" through different types of Paper techniques to replicate nature. The workshop seeks to explore the transformative power of design and how nature can inspire change, evolution and design.
-    
-    Deliverables:
-    - Ideation sketches and final hand-drawn font sheets
-    - Final Paper Artwork/design curated after the workshop
-    - Brief description (50-100 words) explaining the design concept
-    
-    Rules:
-    - Design should reflect the concepts of nature and biomimicry
-    - Each participant/team may submit only one entry
-    - Design submitted must be original creations
-    - Plagiarism or copyright infringement will result in disqualification
-    
-    Evaluation Criteria:
-    - Interpretation of the theme
-    - Creativity and originality
-    - Design aesthetics
-    - Overall visual impact`
+      details: `Mode: Offline...`
     },
     { 
       value: "space-design", 
       label: "Space Design 3D Architectural Model", 
       icon: Building, 
-      description: "Create 3D architectural models with Ar. Pritam Lenka.",
-      details: `Mode: Offline
-    Team size: Individual or group of maximum 3
-    Requirements:
-    - Foam board, cardboard
-    - Cutting mats, precision knives
-    - Glue, rulers, pencils
-    - Scale rulers
-    - Basic cutting tools like utility knives
-    - Metal-edged ruler
-    
-    Eligibility: Anyone above the age of 18
-    
-    Overview:
-    Dive into the fundamentals of Space Design through hands-on architectural modeling. This workshop introduces participants to model-making techniques that translate spatial concepts into tangible, scaled representations. Perfect for aspiring designers, it provides foundational skills in visualizing, planning, and constructing architectural models.
-    
-    Deliverables:
-    - Introduction to Space Design Principles: Basics of scale, proportion, and spatial planning
-    - Model-Making Techniques: Step-by-step guidance on using tools and materials for architectural models
-    - Scaled Model Project: Each participant will complete a scaled-down model of a room or simple structure
-    - Material Selection Guide: Handout or PDF on materials, tools, and techniques for future projects`
+      description: "Create impressive 3D architectural models",
+      details: `Mode: Offline...`
     },
-    
   ],
+  "November 23rd, 2024": [
+    {
+      value: "life-between-frames",
+      label: "Life Between Frames",
+      icon: Camera,
+      description: "Learn the art of stop motion animation",
+      details: `Mode: Offline
+
+Overview:
+This stop motion workshop, "Life Between Frames" offers an engaging introduction to the art of stop motion animation. Participants will learn to bring inanimate objects to life, explore storytelling techniques, and discover the magic of creating movement frame by frame.`
+    }
+  ]
 }
+
+const organizationMappings = {
+  "Jagran Lakecity University": [
+    "JLU",
+    "Jagran lake city University",
+    "Jagran lakecity university",
+    "Jagran Lakecity university",
+    "JLU Bhopal",
+    "Jagaran Lakecity University",
+    "Jagran Lake City University",
+    "Jagran lakecity University Bhopal",
+    "JSJC",
+    "Jlu",
+    "Jagran school of design",
+    "JLU Bholap",
+    "Jaagran lakecity university",
+    "Jagran LakeCity University"
+  ],
+  "Delhi Public School, Neelbad": [
+    "DPS Neelbad",
+    "Delhi Public School Neelbad",
+    "Delhi public school neelbad",
+    "DPS neelbad bhopal",
+    "Delhi Public School, Neelbad, Bhopal",
+    "DPS",
+    "Delhi Public School"
+  ],
+  "Delhi Public School, Kolar": [
+    "DPS Kolar",
+    "Delhi Public School Kolar",
+    "Delhi public school kolar",
+    "DPS kolar bhopal",
+    "Delhi Public School, Kolar, Bhopal",
+    "DPS",
+    "Delhi Public School"
+  ],
+  "Delhi Public School, Rau": [
+    "DPS Rau",
+    "Delhi Public School Rau",
+    "Delhi public school rau",
+    "DPS RAU Indore",
+    "Delhi Public School, Rau Indore",
+    "DPS",
+    "Delhi Public School"
+  ],
+  "Delhi Public School, Nipania": [
+    "DPS Nipania",
+    "Delhi Public School Nipania",
+    "Delhi public school nipania",
+    "DPS nipania indore",
+    "Delhi Public School, Nipania, Indore",
+    "DPS",
+    "Delhi Public School"
+  ],
+  "Sage University": [
+    "SAGE",
+    "Sage university",
+    "SAGE Uni",
+    "Sage Uni",
+    "SAGE University"
+  ],
+  "Makhanlal Chaturvedi University": [
+    "Makhanlal chaturvedi university",
+    "MCU",
+    "Makhanlal Chaturvedi University"
+  ],
+  "Sagar Public School": ["Sagar Public School"],
+  "Peoples Public School": ["Peoples public school"],
+  "The Bhopal School of Social Sciences": ["The Bhopal school of social science"],
+  "School of Planning and Architecture": ["School of planning and architecture"],
+  "UIT RGPV": [
+    "UIT RGPV Bhopal",
+    "UIT RGPV BHOPAL"
+  ],
+  "Career College": ["Career College"],
+  "A. P. Moller Maersk": ["A. P. Moller Maersk"],
+  "McCann Worldgroup": ["McCann Worldgroup"],
+  "PhonePe": ["PhonePe"],
+  "eClerx": ["eClerx"],
+  "Aureate Labs": ["Aureate Labs"],
+  "CodeCartel LLP": ["Codecartel llp"],
+  "Golden Ratio Designs": ["Golden Ratio Designs"],
+  "Pristine Ideas": ["Pristine ideas"],
+  "Impact4Nutrition": ["Impact4Nutrition"],
+  "Draftss": ["Draftss", "Drafts"],
+  "DzyenCrew": ["DzyenCrew"],
+  "Mystique7": ["Mystique7"],
+  "CESIT Ltd": ["CESIT Ltd"],
+  "Freelancer": [
+    "Freelancer",
+    "Freelance designer",
+    "Freelancer, Student at BU"
+  ]
+};
 
 const workshopDates = Object.keys(workshops) as Array<keyof typeof workshops>;
 
 export function EnhancedRegistrationFormComponent() {
   const [step, setStep] = useState(0)
+  
   const [formData, setFormData] = useState<FormData>({
-    name: "",
+    firstName: "",
+    lastName: "",
     email: "",
     phone: "",
     organizationType: "",
@@ -346,11 +418,88 @@ export function EnhancedRegistrationFormComponent() {
     workshops: {
       "November 21st, 2024": "",
       "November 22nd, 2024": "",
+      "November 23rd, 2024": "",
     },
   })
   const [errors, setErrors] = useState<FormErrors>({})
   const [isSubmitted, setIsSubmitted] = useState(false)
   const [isSubmitting, setIsSubmitting] = useState(false)
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [filteredSuggestions, setFilteredSuggestions] = useState([]);
+  const suggestionRef = useRef(null);
+
+  const handleOrganizationInput = (input) => {
+    updateFormData("organizationName", input);
+    
+    if (!input) {
+      setShowSuggestions(false);
+      return;
+    }
+  
+    const filtered = [];
+    const isDPSSearch = input.toLowerCase() === "dps" || 
+                       input.toLowerCase().includes("delhi public");
+  
+    Object.entries(organizationMappings).forEach(([official, variants]) => {
+      // Special handling for DPS schools
+      if (formData.organizationType === "school" && isDPSSearch) {
+        if (official.toLowerCase().includes("delhi public school")) {
+          filtered.push({
+            official: official,
+            matches: variants.filter(name => 
+              // Exclude the generic "DPS" variant but include specific ones
+              !(name === "DPS" || name === "Delhi Public School") &&
+              name.toLowerCase().includes(input.toLowerCase())
+            )
+          });
+        }
+      }
+      // Regular search for other cases
+      else if (
+        official.toLowerCase().includes(input.toLowerCase()) || 
+        variants.some(variant => variant.toLowerCase().includes(input.toLowerCase()))
+      ) {
+        // Filter based on organization type
+        const shouldInclude = 
+          (formData.organizationType === "school" && official.toLowerCase().includes("school")) ||
+          (formData.organizationType === "college" && 
+            (official.toLowerCase().includes("college") || 
+             official.toLowerCase().includes("university"))) ||
+          (formData.organizationType === "professional" && 
+            !official.toLowerCase().includes("school") && 
+            !official.toLowerCase().includes("university"));
+  
+        if (shouldInclude) {
+          filtered.push({
+            official: official,
+            matches: variants.filter(name => 
+              name.toLowerCase().includes(input.toLowerCase())
+            )
+          });
+        }
+      }
+    });
+  
+    // Sort DPS schools alphabetically if it's a DPS search
+    if (isDPSSearch) {
+      filtered.sort((a, b) => a.official.localeCompare(b.official));
+    }
+  
+    setFilteredSuggestions(filtered);
+    setShowSuggestions(filtered.length > 0);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (suggestionRef.current && !suggestionRef.current.contains(event.target)) {
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
+  
 
   const updateFormData = (field: keyof FormData | string, value: string | Record<string, string>) => {
     setFormData((prev) => ({ ...prev, [field]: value }))
@@ -361,12 +510,21 @@ export function EnhancedRegistrationFormComponent() {
     const newErrors: FormErrors = {}
     switch (step) {
       case 0:
-        if (!formData.name) newErrors["name"] = "Name is required"
+        if (!formData.firstName) newErrors["firstName"] = "First name is required"
+        if (!formData.lastName) newErrors["lastName"] = "Last name is required"
         if (!formData.email) newErrors["email"] = "Email is required"
         else if (!/\S+@\S+\.\S+/.test(formData.email)) newErrors["email"] = "Invalid email format"
-        if (!formData.phone) newErrors["phone"] = "Phone number is required"
-        else if (!/^[6-9]\d{9}$/.test(formData.phone)) newErrors["phone"] = "Invalid Indian phone number"
-        break
+        if (!formData.phone) {
+          newErrors["phone"] = "Phone number is required";
+        } else {
+          const phoneNum = formData.phone.replace(/\D/g, '');
+          if (phoneNum.length !== 10) {
+            newErrors["phone"] = "Phone number must be 10 digits";
+          } else if (!/^[0-9]\d{9}$/.test(phoneNum)) {
+            newErrors["phone"] = "Please enter a valid Indian mobile number";
+          }
+        }
+        break;
       case 1:
         if (!formData.organizationType) newErrors["organizationType"] = "Organization type is required"
         if (!formData.organizationName) newErrors["organizationName"] = "Organization name is required"
@@ -378,12 +536,20 @@ export function EnhancedRegistrationFormComponent() {
 
   const nextStep = () => {
     if (validateStep()) {
-      setStep((prev) => Math.min(prev + 1, formSteps.length - 1))
+      if (step === 1 && formData.organizationType === "professional") {
+        setStep(3)
+      } else {
+        setStep((prev) => Math.min(prev + 1, formSteps.length - 1))
+      }
     }
   }
 
   const prevStep = () => {
-    setStep((prev) => Math.max(prev - 1, 0))
+    if (step === 3 && formData.organizationType === "professional") {
+      setStep(1)
+    } else {
+      setStep((prev) => Math.max(prev - 1, 0))
+    }
   }
 
   const renderStep = () => {
@@ -397,22 +563,48 @@ export function EnhancedRegistrationFormComponent() {
             transition={{ duration: 0.3 }}
             className="space-y-4"
           >
-            <div className="space-y-2">
-              <Label htmlFor="name" className="text-[#212120]">Full Name</Label>
-              <div className="relative">
-                <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#460E2F]" />
-                <Input
-                  id="name"
-                  placeholder="Enter your full name"
-                  value={formData.name}
-                  onChange={(e) => updateFormData("name", e.target.value)}
-                  className="pl-10 border-[#D2DDDE] focus:border-[#460E2F] focus:ring-[#460E2F]"
-                />
-              </div>
-              {errors["name"] && (
-                <p className="text-[#9A1B22] text-sm">{errors["name"]}</p>
-              )}
-            </div>
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+  <div className="space-y-2">
+    <Label htmlFor="firstName" className="text-[#212120]">First Name</Label>
+    <div className="relative">
+      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#460E2F]" />
+      <Input
+        id="firstName"
+        placeholder="Enter first name"
+        value={formData.firstName}
+        onChange={(e) => {
+          const value = e.target.value.replace(/^[a-z]/, c => c.toUpperCase());
+          updateFormData("firstName", value);
+        }}
+        className="pl-10 border-[#D2DDDE] focus:border-[#460E2F] focus:ring-[#460E2F]"
+        autoCapitalize="words"
+      />
+    </div>
+    {errors["firstName"] && (
+      <p className="text-[#9A1B22] text-sm">{errors["firstName"]}</p>
+    )}
+  </div>
+  <div className="space-y-2">
+    <Label htmlFor="lastName" className="text-[#212120]">Last Name</Label>
+    <div className="relative">
+      <User className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#460E2F]" />
+      <Input
+        id="lastName"
+        placeholder="Enter last name"
+        value={formData.lastName}
+        onChange={(e) => {
+          const value = e.target.value.replace(/^[a-z]/, c => c.toUpperCase());
+          updateFormData("lastName", value);
+        }}
+        className="pl-10 border-[#D2DDDE] focus:border-[#460E2F] focus:ring-[#460E2F]"
+        autoCapitalize="words"
+      />
+    </div>
+    {errors["lastName"] && (
+      <p className="text-[#9A1B22] text-sm">{errors["lastName"]}</p>
+    )}
+  </div>
+</div>
             <div className="space-y-2">
               <Label htmlFor="email" className="text-[#212120]">Email Address</Label>
               <div className="relative">
@@ -435,12 +627,32 @@ export function EnhancedRegistrationFormComponent() {
               <div className="relative">
                 <Phone className="absolute left-3 top-1/2 transform -translate-y-1/2 text-[#460E2F]" />
                 <Input
-                  id="phone"
-                  placeholder="Enter your phone number"
-                  value={formData.phone}
-                  onChange={(e) => updateFormData("phone", e.target.value)}
-                  className="pl-10 border-[#D2DDDE] focus:border-[#460E2F] focus:ring-[#460E2F]"
-                />
+  id="phone"
+  placeholder="Enter your mobile number"
+  value={formData.phone}
+  onChange={(e) => {
+    let value = e.target.value.replace(/\D/g, ''); // Remove non-digits
+    
+    // Remove leading 91 if present (in case user enters +91)
+    if (value.startsWith('91') && value.length > 2) {
+      value = value.slice(2);
+    }
+    
+    // Only keep last 10 digits if longer
+    if (value.length > 10) {
+      value = value.slice(-10);
+    }
+    
+    // Format: XXXXX XXXXX for Indian numbers
+    if (value.length > 5) {
+      value = `${value.slice(0, 5)} ${value.slice(5)}`;
+    }
+    
+    updateFormData("phone", value);
+  }}
+  className="pl-10 border-[#D2DDDE] focus:border-[#460E2F] focus:ring-[#460E2F]"
+  maxLength={11} // 5 digits + space + 5 digits = 11 characters
+/>
               </div>
               {errors["phone"] && (
                 <p className="text-[#9A1B22] text-sm">{errors["phone"]}</p>
@@ -458,8 +670,7 @@ export function EnhancedRegistrationFormComponent() {
             className="space-y-4"
           >
             <div className="space-y-2">
-              <Label className="text-[#212120]">Organization Type</Label>
-              <RadioGroup
+            <Label className="text-[#212120]">Participating As</Label>              <RadioGroup
                 value={formData.organizationType}
                 onValueChange={(value) => updateFormData("organizationType", value)}
                 className="flex flex-col space-y-2"
@@ -481,26 +692,62 @@ export function EnhancedRegistrationFormComponent() {
               )}
             </div>
             {formData.organizationType && (
-              <div className="space-y-2">
-                <Label htmlFor="organizationName" className="text-[#212120]">
-                  {formData.organizationType === "school" ? "School Name" :
-                   formData.organizationType === "college" ? "College Name" :
-                   "Organization Name"}
-                </Label>
-                <Input
-                  id="organizationName"
-                  placeholder={`Enter your ${formData.organizationType === "school" ? "school" :
-                                            formData.organizationType === "college" ? "college" :
-                                            "organization"} name`}
-                  value={formData.organizationName}
-                  onChange={(e) => updateFormData("organizationName", e.target.value)}
-                  className="border-[#D2DDDE] focus:border-[#460E2F] focus:ring-[#460E2F]"
-                />
-                {errors["organizationName"] && (
-                  <p className="text-[#9A1B22] text-sm">{errors["organizationName"]}</p>
+  <div className="space-y-2">
+    <Label htmlFor="organizationName" className="text-[#212120]">
+      {formData.organizationType === "school" ? "School Name" :
+       formData.organizationType === "college" ? "College Name" :
+       "Company Name"}
+    </Label>
+    <div className="relative">
+      <Input
+        id="organizationName"
+        placeholder={`Enter your ${
+          formData.organizationType === "school" ? "school" :
+          formData.organizationType === "college" ? "college" :
+          "company"
+        } name`}
+        value={formData.organizationName}
+        onChange={(e) => handleOrganizationInput(e.target.value)}
+        onFocus={() => {
+          if (formData.organizationName) {
+            handleOrganizationInput(formData.organizationName);
+          }
+        }}
+        className="border-[#D2DDDE] focus:border-[#460E2F] focus:ring-[#460E2F]"
+      />
+      {showSuggestions && filteredSuggestions.length > 0 && (
+        <div className="absolute z-50 w-full mt-1 bg-white rounded-md shadow-lg border border-[#D2DDDE]">
+          <ul className="max-h-60 overflow-auto py-1">
+            {filteredSuggestions.map((suggestion, index) => (
+              <li
+                key={index}
+                className="px-4 py-2 hover:bg-[#D2DDDE]/20 cursor-pointer"
+                onClick={() => {
+                  updateFormData("organizationName", suggestion.official);
+                  setShowSuggestions(false);
+                }}
+              >
+                <div className="font-medium text-[#460E2F]">{suggestion.official}</div>
+                {suggestion.matches.length > 1 && (
+                  <div className="text-sm text-[#212120]/70 mt-1">
+                    Also known as: {suggestion.matches
+                      .filter(m => m !== suggestion.official)
+                      .slice(0, 2)
+                      .join(", ")}
+                    {suggestion.matches.length > 3 && " ..."}
+                  </div>
                 )}
-              </div>
-            )}
+              </li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+    {errors["organizationName"] && (
+      <p className="text-[#9A1B22] text-sm">{errors["organizationName"]}</p>
+    )}
+  </div>
+)}
           </motion.div>
         )
         case 2:
@@ -542,7 +789,11 @@ export function EnhancedRegistrationFormComponent() {
       Details
     </Button>
   </DialogTrigger>
-  <DialogContent className="sm:max-w-[550px] bg-white shadow-xl border-0">
+  <DialogContent 
+  className="sm:max-w-[550px] bg-white shadow-xl border-0" 
+  onInteractOutside={(e) => e.preventDefault()}
+  onEscapeKeyDown={(e) => e.preventDefault()}
+>
     <DialogHeader className="border-b border-[#D2DDDE] pb-4">
       <div className="flex items-center space-x-3">
         <competition.icon className="w-8 h-8 text-[#460E2F]" />
@@ -556,45 +807,40 @@ export function EnhancedRegistrationFormComponent() {
     </DialogHeader>
     <ScrollArea className="mt-4 max-h-[65vh] pr-6">
       <div className="space-y-6">
-        {competition.details.split('\n\n').map((section, index) => {
-          const [title, ...content] = section.split('\n');
-          return (
-            <div key={index} className="text-[#212120]">
-              <div className="flex items-center space-x-2 mb-3">
-                {title.toLowerCase().includes('mode') && <Building className="w-5 h-5 text-[#460E2F]" />}
-                {title.toLowerCase().includes('team') && <Users2Icon className="w-5 h-5 text-[#460E2F]" />}
-                {title.toLowerCase().includes('categories') && <GraduationCap className="w-5 h-5 text-[#460E2F]" />}
-                {title.toLowerCase().includes('deliverables') && <PackageIcon className="w-5 h-5 text-[#460E2F]" />}
-                {title.toLowerCase().includes('problem') && <Lightbulb className="w-5 h-5 text-[#460E2F]" />}
-                {title.toLowerCase().includes('rules') && <ScrollTextIcon className="w-5 h-5 text-[#460E2F]" />}
-                {title.toLowerCase().includes('evaluation') && <CheckCircleIcon className="w-5 h-5 text-[#460E2F]" />}
-                {title.toLowerCase().includes('duration') && <Clock className="w-5 h-5 text-[#460E2F]" />}
-                {title.toLowerCase().includes('overview') && <BookOpen className="w-5 h-5 text-[#460E2F]" />}
-                {title.toLowerCase().includes('theme') && <Palette className="w-5 h-5 text-[#460E2F]" />}
-                {title.toLowerCase().includes('judges') && <Users2Icon className="w-5 h-5 text-[#460E2F]" />}
-                {title.toLowerCase().includes('location') && <MapPin className="w-5 h-5 text-[#460E2F]" />}
-                {title.toLowerCase().includes('requirements') && <WrenchIcon className="w-5 h-5 text-[#460E2F]" />}
-                <h3 className="font-semibold text-lg text-[#460E2F]">{title}</h3>
+      {competition.details.split('\n\n').map((section, index) => {
+  const [title, ...content] = section.split('\n');
+  return (
+    <div key={index} className="text-[#212120] mb-6">
+      <div className="flex items-center space-x-2 mb-3">
+        {title.toLowerCase().includes('overview') && <BookOpen className="w-5 h-5 text-[#460E2F]" />}
+        {title.toLowerCase().includes('mode') && <Building className="w-5 h-5 text-[#460E2F]" />}
+        {title.toLowerCase().includes('categories') && <Users2Icon className="w-5 h-5 text-[#460E2F]" />}
+        {title.toLowerCase().includes('team size') && <Users2Icon className="w-5 h-5 text-[#460E2F]" />}
+        {title.toLowerCase().includes('rules') && <ScrollTextIcon className="w-5 h-5 text-[#460E2F]" />}
+        {title.toLowerCase().includes('requirements') && <WrenchIcon className="w-5 h-5 text-[#460E2F]" />}
+        {title.toLowerCase().includes('deliverables') && <PackageIcon className="w-5 h-5 text-[#460E2F]" />}
+        {title.toLowerCase().includes('note') && <Info className="w-5 h-5 text-[#460E2F]" />}
+        <h3 className="font-semibold text-lg text-[#460E2F]">{title.trim()}</h3>
+      </div>
+      <div className="space-y-2 ml-7">
+        {content.map((line, i) => (
+          <div key={i} className="text-base leading-relaxed">
+            {line.trim().startsWith('-') ? (
+              <div className="flex items-start space-x-2">
+                <span className="text-[#460E2F] mt-1">•</span>
+                <span className="text-[#212120]/90">
+                  {line.substring(1).trim()}
+                </span>
               </div>
-              <div className="space-y-2 ml-7">
-                {content.map((line, i) => (
-                  <div key={i} className="text-base leading-relaxed tracking-normal">
-                    {line.startsWith('-') ? (
-                      <div className="flex items-start space-x-2">
-                        <span className="text-[#460E2F] mt-1.5">•</span>
-                        <span className="text-[#212120]/90">
-                          {line.substring(2).replace(/'/g, "&apos;")}
-                        </span>
-                      </div>
-                    ) : (
-                      <p className="text-[#212120]/90">{line.replace(/'/g, "&apos;")}</p>
-                    )}
-                  </div>
-                ))}
-              </div>
-            </div>
-          );
-        })}
+            ) : (
+              <p className="text-[#212120]/90">{line.trim()}</p>
+            )}
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+})}
       </div>
     </ScrollArea>
   </DialogContent>
@@ -652,136 +898,31 @@ export function EnhancedRegistrationFormComponent() {
     </Button>
   </DialogTrigger>
   <DialogContent className="sm:max-w-[550px] bg-white shadow-xl border-0">
-    <DialogHeader>
-      <div className="flex items-center space-x-3 mb-6">
-        <workshop.icon className="w-10 h-10 text-[#460E2F]" />
-        <div>
-          <DialogTitle className="text-[#460E2F] text-2xl font-bold">
-            {workshop.label}
-          </DialogTitle>
-          <p className="text-[#212120]/70 text-base mt-1">{workshop.description}</p>
-        </div>
+  <DialogHeader>
+    <div className="flex items-center space-x-3 mb-8">
+      <workshop.icon className="w-10 h-10 text-[#460E2F]" />
+      <div>
+        <DialogTitle className="text-[#460E2F] text-xl font-bold">
+          {workshop.label}
+        </DialogTitle>
+        <p className="text-[#212120]/70 text-base mt-1">{workshop.description}</p>
       </div>
-    </DialogHeader>
-    <ScrollArea className="mt-4 max-h-[65vh]">
-      <div className="space-y-8 pr-6">
-        {/* Event Details Section */}
-        <div className="space-y-4">
-          <div className="flex items-center space-x-3">
-            <MapPin className="w-5 h-5 text-[#460E2F]" />
-            <span className="text-[#460E2F] font-bold text-lg">Mode:</span> 
-            <span className="font-semibold">Offline</span>
+    </div>
+  </DialogHeader>
+  <ScrollArea className="mt-2 max-h-[65vh]">
+    <div className="space-y-6 pr-6">
+      {workshop.details.split('\n\n').map((section, index) => {
+        const [title, ...content] = section.split('\n');
+        return (
+          <div key={index} className="text-[#212120]">
+            <p className="font-semibold text-lg text-[#460E2F] mb-3">{title.trim()}</p>
+            <p className="text-[#212120] text-base leading-relaxed">{content.join('\n').trim()}</p>
           </div>
-          
-          <div className="flex items-center space-x-3">
-            <Users2Icon className="w-5 h-5 text-[#460E2F]" />
-            <span className="text-[#460E2F] font-bold text-lg">Team size:</span>
-            <span>Individual or group of 2</span>
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <UserCheckIcon className="w-5 h-5 text-[#460E2F]" />
-            <span className="text-[#460E2F] font-bold text-lg">Judges:</span>
-            <span>Mr. Sunil Shukla & Dr. Rushit Dubal</span>
-          </div>
-
-          <div className="flex items-center space-x-3">
-            <MapPin className="w-5 h-5 text-[#460E2F]" />
-            <span className="text-[#460E2F] font-bold text-lg">Location:</span>
-            <span>Theatre</span>
-          </div>
-        </div>
-
-        {/* Requirements Section */}
-        <div className="space-y-3">
-          <div className="flex items-center space-x-3 border-b border-gray-100 pb-2">
-            <WrenchIcon className="w-5 h-5 text-[#460E2F]" />
-            <span className="text-[#460E2F] font-bold text-lg">Requirements:</span>
-          </div>
-          <ul className="ml-8 space-y-2">
-            {workshop.details.match(/Requirements:([^]*?)(?=\n\n|\n[A-Z]|$)/s)?.[1]
-              .split('\n')
-              .filter(item => item.trim().startsWith('-'))
-              .map((item, index) => (
-                <li key={index} className="text-[#212120] flex items-center space-x-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#460E2F]" />
-                  <span>{item.replace('-', '').trim()}</span>
-                </li>
-              ))}
-          </ul>
-        </div>
-
-        {/* Categories Section */}
-        <div className="space-y-3">
-          <div className="flex items-center space-x-3 border-b border-gray-100 pb-2">
-            <GraduationCap className="w-5 h-5 text-[#460E2F]" />
-            <span className="text-[#460E2F] font-bold text-lg">Categories:</span>
-          </div>
-          <ul className="ml-8 space-y-2">
-            <li className="text-[#212120] flex items-center space-x-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#460E2F]" />
-              <span>10+2 & College Students</span>
-            </li>
-            <li className="text-[#212120] flex items-center space-x-2">
-              <span className="w-1.5 h-1.5 rounded-full bg-[#460E2F]" />
-              <span>Working professionals</span>
-            </li>
-          </ul>
-        </div>
-
-        {/* Deliverables Section */}
-        <div className="space-y-3">
-          <div className="flex items-center space-x-3 border-b border-gray-100 pb-2">
-            <PackageIcon className="w-5 h-5 text-[#460E2F]" />
-            <span className="text-[#460E2F] font-bold text-lg">Deliverables:</span>
-          </div>
-          <ul className="ml-8 space-y-2">
-            {workshop.details.match(/Deliverables:([^]*?)(?=\n\n|\n[A-Z]|$)/s)?.[1]
-              .split('\n')
-              .filter(item => item.trim().startsWith('-'))
-              .map((item, index) => (
-                <li key={index} className="text-[#212120] flex items-center space-x-2">
-                  <span className="w-1.5 h-1.5 rounded-full bg-[#460E2F]" />
-                  <span>{item.replace('-', '').trim()}</span>
-                </li>
-              ))}
-          </ul>
-        </div>
-
-        {/* Overview Section */}
-        <div className="space-y-3">
-          <div className="flex items-center space-x-3 border-b border-gray-100 pb-2">
-            <BookOpen className="w-5 h-5 text-[#460E2F]" />
-            <span className="text-[#460E2F] font-bold text-lg">Overview:</span>
-          </div>
-          <p className="ml-8 text-[#212120] leading-relaxed">
-            {workshop.details.match(/Overview:([^]*?)(?=\n\n|\n[A-Z]|$)/s)?.[1].trim()}
-          </p>
-        </div>
-
-        {/* Rules Section (if present in workshop.details) */}
-        {workshop.details.includes('Rules:') && (
-          <div className="space-y-3">
-            <div className="flex items-center space-x-3 border-b border-gray-100 pb-2">
-              <ScrollTextIcon className="w-5 h-5 text-[#460E2F]" />
-              <span className="text-[#460E2F] font-bold text-lg">Rules:</span>
-            </div>
-            <ul className="ml-8 space-y-2">
-              {workshop.details.match(/Rules:([^]*?)(?=\n\n|\n[A-Z]|$)/s)?.[1]
-                .split('\n')
-                .filter(item => item.trim().startsWith('-'))
-                .map((item, index) => (
-                  <li key={index} className="text-[#212120] flex items-center space-x-2">
-                    <span className="w-1.5 h-1.5 rounded-full bg-[#460E2F]" />
-                    <span>{item.replace('-', '').trim()}</span>
-                  </li>
-                ))}
-            </ul>
-          </div>
-        )}
-      </div>
-    </ScrollArea>
-  </DialogContent>
+        );
+      })}
+    </div>
+  </ScrollArea>
+</DialogContent>
 </Dialog>
 
 
@@ -808,7 +949,7 @@ export function EnhancedRegistrationFormComponent() {
                 <User className="w-5 h-5 text-[#460E2F]" />
                 <div>
                   <p className="font-medium text-[#212120]">Name</p>
-                  <p className="text-sm text-[#212120]/70">{formData.name}</p>
+                  <p className="text-sm text-[#212120]/70">{`${formData.firstName} ${formData.lastName}`}</p>
                 </div>
               </div>
               <div className="flex items-center space-x-2">
@@ -856,6 +997,7 @@ export function EnhancedRegistrationFormComponent() {
       try {
         const makeData = {
           ...formData,
+          name: `${formData.firstName} ${formData.lastName}`,
           competitionName: competitions.find(c => c.value === formData.competition)?.label || "",
           workshopsSelected: workshopDates.map((date) => ({
             date,
@@ -906,8 +1048,7 @@ export function EnhancedRegistrationFormComponent() {
               </CardHeader>
               <CardContent>
                 <div className="text-center space-y-4">
-                  <p className="text-lg text-[#460E2F]">We're excited to have you join us, {formData.name}!</p>
-                  <p className="text-[#212120]">Keep an eye on your email for further details and updates about the festival.</p>
+                <p className="text-lg text-[#460E2F]">We're excited to have you join us, {formData.firstName}!</p>                  <p className="text-[#212120]">Keep an eye on your email for further details and updates about the festival.</p>
                 </div>
               </CardContent>
             </Card>
@@ -930,6 +1071,7 @@ export function EnhancedRegistrationFormComponent() {
     style={{ filter: 'hue-rotate(60deg) brightness(1.2)' }}
   />
 </div>
+
   <div className="w-full max-w-2xl">
     <motion.div
       initial={{ opacity: 0, y: -20 }}
