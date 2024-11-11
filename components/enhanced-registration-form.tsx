@@ -322,15 +322,6 @@ This stop motion workshop, "Life Between Frames" offers an engaging introduction
     },
   ],
 }
-
-const hasCapacityLimit = (workshopValue: string): boolean => {
-  return workshopValue in workshopCapacityLimits;
-};
-
-const getRemainingSlots = (workshopValue: string): number | null => {
-  if (!hasCapacityLimit(workshopValue)) return null;
-  return workshopCapacityLimits[workshopValue] - (currentRegistrations[workshopValue] || 0);
-};
 const workshopCapacityLimits: { [key: string]: number } = {
   "printmaking": 50,
   "space-design": 50,
@@ -338,7 +329,7 @@ const workshopCapacityLimits: { [key: string]: number } = {
 };
 
 const currentRegistrations: { [key: string]: number } = {
-  "printmaking": 44,
+  "printmaking": 60,
   "space-design": 68,
   "stop-motion": 87
 };
@@ -914,20 +905,21 @@ const [filteredSuggestions, setFilteredSuggestions] = useState<FilteredSuggestio
                   className="flex flex-col space-y-2"
                 >
                   {dayWorkshops.map((workshop) => (
-               <Label
-               key={workshop.value}
-               className={`flex items-center space-x-3 p-3 rounded-lg border border-[#D2DDDE] cursor-pointer transition-all duration-300 ${
-                 Boolean(workshopCapacityLimits[workshop.value]) && currentRegistrations[workshop.value] >= workshopCapacityLimits[workshop.value]
-                   ? 'opacity-60 cursor-not-allowed bg-gray-100'
-                   : 'hover:bg-[#D2DDDE]/20 hover:border-[#460E2F]'
-               }`}
-             >
+                 <Label
+                 key={workshop.value}
+                 className={`flex items-center space-x-3 p-3 rounded-lg border border-[#D2DDDE] cursor-pointer transition-all duration-300 ${
+                   workshopCapacityLimits[workshop.value] && currentRegistrations[workshop.value] >= workshopCapacityLimits[workshop.value]
+                     ? 'opacity-60 cursor-not-allowed bg-gray-100'
+                     : 'hover:bg-[#D2DDDE]/20 hover:border-[#460E2F]'
+                 }`}
+               >
                  <RadioGroupItem 
-  value={workshop.value} 
-  id={`${date}-${workshop.value}`} 
-  className="border-[#460E2F]"
-  disabled={workshopCapacityLimits[workshop.value] && currentRegistrations[workshop.value] >= workshopCapacityLimits[workshop.value]} 
-/>
+                   value={workshop.value} 
+                   id={`${date}-${workshop.value}`} 
+                   className="border-[#460E2F]"
+                   disabled={workshopCapacityLimits[workshop.value] && 
+                     (currentRegistrations[workshop.value] || 0) >= workshopCapacityLimits[workshop.value]} 
+                 />
                  <div className="space-y-1 flex-1">
                    <div className="font-medium flex items-center justify-between">
                      <div className="flex items-center">
@@ -974,24 +966,21 @@ const [filteredSuggestions, setFilteredSuggestions] = useState<FilteredSuggestio
           {workshop.label}
         </DialogTitle>
         <p className="text-[#212120]/70 text-base mt-1">{workshop.description}</p>
-        {workshopCapacityLimits[workshop.value] && (
-          <div className="mt-2">
-            <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-              currentRegistrations[workshop.value] >= workshopCapacityLimits[workshop.value]
-                ? 'bg-red-100 text-red-700'
-                : workshopCapacityLimits[workshop.value] - currentRegistrations[workshop.value] <= 5
-                ? 'bg-yellow-100 text-yellow-700'
-                : 'bg-green-100 text-green-700'
-            }`}>
-              <UserCheckIcon className="w-3 h-3 mr-1" />
-              {currentRegistrations[workshop.value]} / {workshopCapacityLimits[workshop.value]} registered
-            </span>
-          </div>
-        )}
+        <div className="mt-2">
+          <span className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+            currentRegistrations[workshop.value] >= workshopCapacityLimits[workshop.value]
+              ? 'bg-red-100 text-red-700'
+              : workshopCapacityLimits[workshop.value] - currentRegistrations[workshop.value] <= 5
+              ? 'bg-yellow-100 text-yellow-700'
+              : 'bg-green-100 text-green-700'
+          }`}>
+            <UserCheckIcon className="w-3 h-3 mr-1" />
+            {currentRegistrations[workshop.value]} / {workshopCapacityLimits[workshop.value]} registered
+          </span>
+        </div>
       </div>
     </div>
   </DialogHeader>
-
   <ScrollArea className="mt-2 max-h-[65vh]">
     <div className="space-y-6 pr-6">
       {workshop.details.split('\n\n').map((section, index) => {
