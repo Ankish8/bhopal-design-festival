@@ -324,12 +324,16 @@ This stop motion workshop, "Life Between Frames" offers an engaging introduction
 }
 const workshopCapacityLimits: { [key: string]: number } = {
   "printmaking": 50,
+  "fashion-photography": 50,
+  "biomimicry": 50,
   "space-design": 50,
   "stop-motion": 50
 };
 
 const currentRegistrations: { [key: string]: number } = {
-  "printmaking": 60,
+  "printmaking": 50,
+  "fashion-photography": 53,
+  "biomimicry": 63,
   "space-design": 68,
   "stop-motion": 87
 };
@@ -908,7 +912,7 @@ const [filteredSuggestions, setFilteredSuggestions] = useState<FilteredSuggestio
                  <Label
                  key={workshop.value}
                  className={`flex items-center space-x-3 p-3 rounded-lg border border-[#D2DDDE] cursor-pointer transition-all duration-300 ${
-                   workshopCapacityLimits[workshop.value] && currentRegistrations[workshop.value] >= workshopCapacityLimits[workshop.value]
+                   currentRegistrations[workshop.value] >= workshopCapacityLimits[workshop.value]
                      ? 'opacity-60 cursor-not-allowed bg-gray-100'
                      : 'hover:bg-[#D2DDDE]/20 hover:border-[#460E2F]'
                  }`}
@@ -917,8 +921,7 @@ const [filteredSuggestions, setFilteredSuggestions] = useState<FilteredSuggestio
                    value={workshop.value} 
                    id={`${date}-${workshop.value}`} 
                    className="border-[#460E2F]"
-                   disabled={workshopCapacityLimits[workshop.value] && 
-                     (currentRegistrations[workshop.value] || 0) >= workshopCapacityLimits[workshop.value]} 
+                   disabled={currentRegistrations[workshop.value] >= workshopCapacityLimits[workshop.value]} 
                  />
                  <div className="space-y-1 flex-1">
                    <div className="font-medium flex items-center justify-between">
@@ -928,19 +931,17 @@ const [filteredSuggestions, setFilteredSuggestions] = useState<FilteredSuggestio
                          <div className="text-[#212120]">{workshop.label}</div>
                          <div className="flex items-center space-x-2">
                            <p className="text-sm text-[#212120]/70">{workshop.description}</p>
-                           {workshopCapacityLimits[workshop.value] && (
-                             <div className={`px-2 py-0.5 rounded-full text-xs ${
-                               currentRegistrations[workshop.value] >= workshopCapacityLimits[workshop.value]
-                                 ? 'bg-red-100 text-red-700'
-                                 : workshopCapacityLimits[workshop.value] - currentRegistrations[workshop.value] <= 5
-                                 ? 'bg-yellow-100 text-yellow-700'
-                                 : 'bg-green-100 text-green-700'
-                             }`}>
-                               {currentRegistrations[workshop.value] >= workshopCapacityLimits[workshop.value]
-                                 ? 'Full'
-                                 : `${workshopCapacityLimits[workshop.value] - currentRegistrations[workshop.value]} slots left`}
-                             </div>
-                           )}
+                           <div className={`px-2 py-0.5 rounded-full text-xs ${
+                             currentRegistrations[workshop.value] >= workshopCapacityLimits[workshop.value]
+                               ? 'bg-red-100 text-red-700'
+                               : workshopCapacityLimits[workshop.value] - currentRegistrations[workshop.value] <= 5
+                               ? 'bg-yellow-100 text-yellow-700'
+                               : 'bg-green-100 text-green-700'
+                           }`}>
+                             {currentRegistrations[workshop.value] >= workshopCapacityLimits[workshop.value]
+                               ? 'Full'
+                               : `${workshopCapacityLimits[workshop.value] - currentRegistrations[workshop.value]} slots left`}
+                           </div>
                          </div>
                        </div>
                      </div>
