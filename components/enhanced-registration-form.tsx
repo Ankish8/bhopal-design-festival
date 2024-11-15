@@ -77,6 +77,24 @@ interface FormData {
 interface FormErrors {
   [key: string]: string;
 }
+// Add these right after your existing type definitions and before the AnimatedBackground component
+
+// Competition WhatsApp group links
+const competitionGroups = {
+  "vernacular-logo": "https://chat.whatsapp.com/CqIa81UXct6Imzgk6EwRJP",
+  "visionary-ventures": "https://chat.whatsapp.com/GxqeLfObm7OLTKwaEVFlDc",
+  "visual-storytelling": "https://chat.whatsapp.com/Ic5La1bYVtL1wgdfOanb1D",
+  "fashion-show": "https://chat.whatsapp.com/J3oDKtpYHcaFlWnx0LT4oL"
+};
+
+// Workshop WhatsApp group links
+const workshopGroups = {
+  "printmaking": "https://chat.whatsapp.com/CzO6HWC76HoAuVj4QO0Lx6",
+  "fashion-photography": "https://chat.whatsapp.com/EZSCbVxCY3tB2xGXe28jwS",
+  "biomimicry": "https://chat.whatsapp.com/CEN2baE8QtrF2qwQJqjg2F",
+  "space-design": "https://chat.whatsapp.com/BZHw9VVT6aPH7pXrtLFGgE",
+  "stop-motion": "https://chat.whatsapp.com/Bf2IrzjVR2B7z67LBaf1bh"
+};
 
 // Animated Background Component
 function AnimatedBackground({ children }: { children: React.ReactNode }) {
@@ -433,6 +451,103 @@ const organizationMappings = {
 };
 
 const workshopDates = Object.keys(workshops) as Array<keyof typeof workshops>;
+// Add this function right before your EnhancedRegistrationFormComponent
+
+function generateEmailHTML(formData: FormData) {
+  // Get competition details
+  const selectedCompetition = competitions.find(c => c.value === formData.competition);
+  const competitionSection = selectedCompetition ? `
+    <div style="margin-bottom: 35px; padding: 25px; background-color: #F7FAFC; border-radius: 12px; border: 1px solid #E2E8F0;">
+      <h2 style="color: #460E2F; margin: 0 0 20px;">Your Competition Entry 🏆</h2>
+      <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; padding: 20px; margin: 15px 0;">
+        <h3 style="color: #460E2F; margin: 0 0 15px;">${selectedCompetition.label}</h3>
+        <p style="margin-bottom: 20px;">${selectedCompetition.description}</p>
+        <a href="${competitionGroups[formData.competition]}" style="display: inline-block; padding: 12px 24px; background-color: #460E2F; color: #ffffff !important; text-decoration: none; border-radius: 8px; font-weight: 500;">Join Competition Group →</a>
+      </div>
+    </div>
+  ` : '';
+
+  // Get selected workshops (filter out empty selections)
+  const selectedWorkshops = workshopDates
+    .map(date => {
+      const workshopValue = formData.workshops[date];
+      if (!workshopValue) return null;
+      const workshop = workshops[date].find(w => w.value === workshopValue);
+      if (!workshop) return null;
+      return { date, workshop, groupLink: workshopGroups[workshopValue] };
+    })
+    .filter(Boolean);
+
+  // Create workshop section only if there are selected workshops
+  const workshopSection = selectedWorkshops.length > 0 
+    ? `
+      <div style="margin-bottom: 35px; padding: 25px; background-color: #F7FAFC; border-radius: 12px; border: 1px solid #E2E8F0;">
+        <h2 style="color: #460E2F; margin: 0 0 20px;">Your Workshop Schedule 📅</h2>
+        ${selectedWorkshops.map(({ date, workshop, groupLink }) => `
+          <div style="background: #FFFFFF; border: 1px solid #E2E8F0; border-radius: 8px; padding: 20px; margin: 15px 0;">
+            <span style="display: inline-block; background-color: #460E2F; color: #ffffff; padding: 4px 12px; border-radius: 6px; font-size: 14px; font-weight: 500; margin-bottom: 10px;">${date.split(',')[0]}</span>
+            <h3 style="color: #460E2F; margin: 0 0 15px;">${workshop.label}</h3>
+            <p style="margin-bottom: 20px;">${workshop.description}</p>
+            <a href="${groupLink}" style="display: inline-block; padding: 12px 24px; background-color: #460E2F; color: #ffffff !important; text-decoration: none; border-radius: 8px; font-weight: 500;">Join Workshop Group →</a>
+          </div>
+        `).join('')}
+      </div>
+    `
+    : '';
+
+  // Add appropriate content based on what's selected
+  const mainContent = selectedCompetition || selectedWorkshops.length > 0
+    ? `${competitionSection}${workshopSection}`
+    : `
+      <div style="margin-bottom: 35px; padding: 25px; background-color: #F7FAFC; border-radius: 12px; border: 1px solid #E2E8F0;">
+        <p style="text-align: center; color: #4A5568;">You haven't selected any competitions or workshops yet.</p>
+        <p style="text-align: center; color: #4A5568;">Reach out to us if you'd like to add these to your registration.</p>
+      </div>
+    `;
+
+  return `<!DOCTYPE html>
+  <html lang="en">
+    <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Bhopal Design Festival Registration Confirmation</title>
+    </head>
+    <body style="margin: 0; padding: 20px; font-family: Arial, sans-serif; background-color: #F7FAFC; color: #2D3748;">
+      <div style="max-width: 600px; margin: 0 auto; background: white; border-radius: 16px; overflow: hidden; box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);">
+        <!-- Header -->
+        <div style="background: linear-gradient(135deg, #460E2F 0%, #6D1A4B 100%); padding: 40px 30px; text-align: center;">
+          <img src="https://i.ibb.co/n8R4JMB/BDF-Logo.png" alt="BDF Logo" width="100" style="display: block; margin: 0 auto 20px;">
+          <h1 style="color: white; margin: 0; font-size: 28px; margin-bottom: 10px;">Welcome to Bhopal Design Festival</h1>
+          <p style="color: #E2E8F0; margin: 0;">WAYS OF NATURE: DECOLONIZING DESIGN</p>
+        </div>
+        
+        <!-- Content -->
+        <div style="padding: 40px 30px;">
+          <p style="margin-bottom: 25px;">Dear ${formData.firstName},</p>
+          <p style="margin-bottom: 35px;">We're thrilled to confirm your registration for the Bhopal Design Festival 2024! Get ready for three days of inspiration, learning, and creative exploration.</p>
+          
+          ${mainContent}
+          
+          <div style="text-align: center; margin-top: 40px; padding: 25px; background-color: #F7FAFC; border-radius: 12px; border: 1px solid #E2E8F0;">
+            <h2 style="color: #460E2F; margin: 0 0 15px;">Need Help? 🤝</h2>
+            <p style="margin-bottom: 20px;">Our team is here to assist you with any questions or concerns.</p>
+            <a href="mailto:support@bhopaldesignfestival.com" style="display: inline-block; padding: 12px 24px; background-color: #460E2F; color: white; text-decoration: none; border-radius: 8px; font-weight: 500;">Contact Support</a>
+          </div>
+        </div>
+        
+        <!-- Footer -->
+        <div style="background: #2D3748; color: #CBD5E0; padding: 30px; text-align: center;">
+          <p style="color: white; font-size: 18px; font-weight: 600; margin: 0 0 15px;">Bhopal Design Festival 2024</p>
+          <p style="margin: 0 0 20px; color: white;">November 21-23, 2024</p>
+          <p style="font-size: 12px; color: #A0AEC0; margin: 0;">
+            © 2024 Bhopal Design Festival. All rights reserved.<br>
+            You received this email because you registered for BDF 2024.
+          </p>
+        </div>
+      </div>
+    </body>
+  </html>`;
+}
 
 export function EnhancedRegistrationFormComponent() {
   const [step, setStep] = useState(0)
@@ -1064,43 +1179,60 @@ const [filteredSuggestions, setFilteredSuggestions] = useState<FilteredSuggestio
 
 
 
-  const handleSubmit = async () => {
-    if (validateStep()) {
-      setIsSubmitting(true)
-      try {
-        const makeData = {
-          ...formData,
-          name: `${formData.firstName} ${formData.lastName}`,
-          competitionName: competitions.find(c => c.value === formData.competition)?.label || "",
-          workshopsSelected: workshopDates.map((date) => ({
-            date,
-            workshop: workshops[date].find(w => w.value === formData.workshops[date])?.label || "None selected"
-          })),
-          submissionDate: new Date().toISOString(),
-        }
+  // Replace your existing handleSubmit function with this one
 
-        const response = await fetch('https://hook.eu2.make.com/bone3wxkg21torr3n096m4x6gw36lys1', {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(makeData)
-        });
-
-        if (!response.ok) throw new Error('Failed to submit form');
+const handleSubmit = async () => {
+  if (validateStep()) {
+    setIsSubmitting(true);
+    try {
+      // Create the data object to send to make.com
+      const makeData = {
+        // Basic information
+        ...formData,
+        name: `${formData.firstName} ${formData.lastName}`,
         
-        setIsSubmitted(true)
-        confetti({
-          particleCount: 100,
-          spread: 70,
-          origin: { y: 0.6 }
-        })
-      } catch (error) {
-        console.error('Error submitting form:', error);
-        alert('Failed to submit form. Please try again.');
-      } finally {
-        setIsSubmitting(false)
-      }
+        // Competition information
+        competitionName: competitions.find(c => c.value === formData.competition)?.label || "",
+        competitionGroupLink: competitionGroups[formData.competition] || "",
+        
+        // Workshop information
+        workshopsSelected: workshopDates.map((date) => ({
+          date,
+          workshop: workshops[date].find(w => w.value === formData.workshops[date])?.label || "None selected",
+          groupLink: workshopGroups[formData.workshops[date]] || ""
+        })),
+        
+        // Additional information
+        submissionDate: new Date().toISOString(),
+        
+        // Generate the email HTML
+        emailTemplate: generateEmailHTML(formData)
+      };
+
+      // Send the data to make.com
+      const response = await fetch('https://hook.eu2.make.com/bone3wxkg21torr3n096m4x6gw36lys1', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(makeData)
+      });
+
+      if (!response.ok) throw new Error('Failed to submit form');
+      
+      // Show success state
+      setIsSubmitted(true);
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 }
+      });
+    } catch (error) {
+      console.error('Error submitting form:', error);
+      alert('Failed to submit form. Please try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   }
+};
 
   if (isSubmitted) {
     return (
